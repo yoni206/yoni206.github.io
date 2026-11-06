@@ -1,0 +1,4 @@
+(((lambda x. lambda y. x)(lambda s. lambda z.z))z) z
+((lambda y. lambda s. lambda z.z)z) z
+(lambda s. lambda z.z) z
+lambda z.z

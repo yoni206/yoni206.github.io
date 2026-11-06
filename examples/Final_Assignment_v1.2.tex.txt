@@ -1,0 +1,72 @@
+s_{0}\models\psi_{2} & EX_{\left[a,b\right]}(true)
+s_{0}\models E(\psi_{1}U_{\left[a,b\right]}\psi_{2})
+s_{0}\models EX_{\left[a,b\right]}(true)
+s_{1}
+\left\langle s_{0},n,s_{1}\right\rangle \in R
+a\leq n\leq b
+s_{1}\models true
+s_{1},s_{2},...
+s_{0},s_{1},s_{2},...
+k=0
+s_{k}\models\psi_{2}
+s_{0}
+s_{k}
+a\leq\Sigma_{i=0}^{k}s_{i}=s_{0}\leq b
+\varphi
+TTG-CTL
+TTG
+K(\varphi):=\left\{ s\in K: s\models\varphi\right\} 
+K=\left\langle S,s_{I},R,L\right\rangle 
+\psi_{1},\psi_{2}
+a\leq b\in\mathbb{N}
+c,d,e
+K(E(\psi_{1}U_{\left[a,b\right]}\psi_{2}))=K((\psi_{2} & EX_{\left[a,b\right]}(true)) | (\psi_{1} & EX_{\left[c,c\right]}E(\psi_{1}U_{\left[d,e\right]}\psi_{2})))
+a\leq c+d
+c+e\leq b
+(\Leftarrow)
+s\models(\psi_{2} & EX_{\left[a,b\right]}(true)) | (\psi_{1} & EX_{\left[c,c\right]}E(\psi_{1}U_{\left[d,e\right]}\psi_{2}))
+s\models(\psi_{1} & EX_{\left[a,b\right]}(true))
+s\models E(\psi_{1}U_{\left[a,b\right]}\psi_{2})
+K(A(\psi_{1}U_{\left[a,b\right]}\psi_{2}))=K(\psi_{2} | (\psi_{1} & AXA(\psi_{1}U_{\left[a,b\right]}\psi_{2})))
+E(\psi_{1}U_{\left[a,b\right]}\psi_{2})
+\lambda Z.\psi_{2} | (\psi_{1} & EXZ)
+A(\psi_{1}U_{\left[a,b\right]}\psi_{2})
+\lambda Z.\psi_{2} | (\psi_{1} & AXZ)
+K=\left\langle S,S_{I},R,L\right\rangle 
+Z_{1}\subseteq Z_{2}
+\psi_{2} | (\psi_{1} & EXZ_{1})\subseteq\psi_{2} | (\psi_{1} & EXZ_{1})
+EXZ_{1}\subseteq EXZ_{1}
+s\models EXZ_{1}
+s'
+P_sgnl
+E_sgnl
+T_cmd:=Red
+T_cmd:=Green
+P_cmd:=Red
+P_cmd:=Green
+T_state:=(T_cmd=Green) & (P_cmd=Red)
+P_state:=(T_cmd=Red) & (P_cmd=Green)
+I_state:=(T_cmd=Red) & (P_cmd=Red)
+Bad_state:=(T_cmd=Green) & (P_cmd=Green)
+T_enters:=((Y(!(T_state))) & (T_state)) | ((Y(T_state)) & (E_sgnl) & (T_state))
+P_enters:=((Y(! P_state)) & P_state) | ((Y(P_state)) & (P_sgnl) & (P_state))
+G((((P_state) | (Y(P_state))) & (P_sgnl)) -> ((! P_sgnl) U (T_enters)))
+P_state
+G(T_state -> X(!(P_state))) & G(((T_state) & X(X(P_state))) -> (X(I_state)))
+G(P_state -> X(!(T_state))) & G(((P_state) & X(X(T_state))) -> X(I_state))
+G(!(Bad_state))
+T_state
+G(T_enters -> (X0^3(T_state)))
+G(((Y(T_state)) & ! T_state) -> (X1_7(T_state)))
+G(!(P_sgnl)) -> G(!(P_state))
+G(P_sgnl -> (X0_5(P_state)))
+G(((I_state) & (Y(T_state)) & (E_sgnl)) -> (X(T_enters)))
+G((P_enters) -> ((X0^3(! E_sgnl)) -> (X0^3(P_state))))
+G((P_state & E_sgnl) -> X1_2(T_enters))
+G((Y(I_state) & P_sgnl & (Y(P_state))) -> X(T_enters & (X0_4(P_state))))
+I_state
+Y(I_state)
+G(T_enters -> (X0^4(T_state)))
+G(P_sgnl -> X0_5(P_state))
+P_button
+G((E_sgnl) -> ((X0^7(!(P_sgnl))) & (Y0_7(!(P_sgnl)))))

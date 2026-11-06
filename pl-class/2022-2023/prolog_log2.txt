@@ -1,0 +1,16 @@
+consult(backtrack1).
+?-parent(john,Child).
+
+assert((larger(A,B,A) :- A > B)).
+assert(larger(A,B,B)).
+
+
+assert((larger(A,B,A) :- A > B)).
+assert((larger(A,B,B) :- A=<B)).
+
+assert((larger(A,B,A) :- A > B,  !)).
+assert(larger(A,B,B)).
+
+consult(neg1).
+consult(neg2).
+consult(neg4).

@@ -1,0 +1,11 @@
+1 / 0;;
+try 1 / 0 with Division_by_zero -> 1;;
+try 1 / 0 with _ -> 1;;
+try 1 / 0 with e -> 1;;
+try 1 / 0 with e -> let x=e in 1;;
+type point = {x: float; y: float};;
+type mpoint = {mutable x: float; mutable y: float};;
+let move = fun ((dx,dy), p) -> p.x <- p.x +. dx;  p.y <- p.y +. dy; p;;
+type mpoint = {mutable x: float; mutable y: float};;
+type point = {x: float; y: float};;
+let move = fun ((dx,dy), p) -> p.x <- p.x +. dx;  p.y <- p.y +. dy; p;;

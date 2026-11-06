@@ -1,0 +1,33 @@
+let rec iter = fun n f x -> if n=0 then x else f (iter (n-1) f x);;
+let suc = fun x -> x+1;;
+let rec add = fun (x,y) -> if x=0 then y else add(x-1,suc(y));;
+
+let rec mult = fun (x,y) -> if y=0 then 0 else  add(mult(x,y-1),x);;
+
+let rec power = fun (x,y) -> if y=0 then 1 else  mult(power(x,y-1),x);;
+
+let rec tower = fun (x,y) -> if y=0 then 1 else  power(x,tower(x,y-1));;
+let suc = fun x -> x+1;;
+let add = fun (x,y) -> iter x suc y;;
+
+let mul = fun (x,y) -> iter y (fun (i,j) -> (add(i,j),x)) (x,0);;
+let first = fun (x,y) -> x;;
+let mult = fun (x,y) -> first(mul(x,y));;
+
+let pow = fun (x,y) -> iter y (fun (i,j) -> (mult(i,j),x)) (x,1);;
+let power = fun (x,y) -> first(pow(x,y));;
+
+let tow = fun (x,y) -> iter y (fun (i,j) -> (power(j,i),x)) (1,x);;
+let tower = fun (x,y) -> first(tow(x,y));;
+
+let f0 = fun x -> x+1;;
+let f1 = fun x -> iter (x+1) f0 x;;
+let f2 = fun x -> iter (x+1) f1 x;;
+let f3 = fun x -> iter (x+1) f2 x;;
+
+let rec f = fun i -> fun x -> match i with
+                                0 -> x + 1
+                              | n -> iter (x+1) (f(n-1)) x;;
+
+let a = fun x -> f(x)(x);;
+

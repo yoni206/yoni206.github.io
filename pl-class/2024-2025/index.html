@@ -1,0 +1,333 @@
+<html>
+<head>
+<title> Programming Languages -- BIU 2023/2024 </title>
+
+<style>
+/* unvisited link */
+a:link {
+  color: green;
+}
+
+/* visited link */
+a:visited {
+  color: green;
+}
+
+/* mouse over link */
+a:hover {
+  color: hotpink;
+}
+
+/* selected link */
+a:active {
+  color: blue;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th,td {
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #DDD;
+  border-top: 1px solid #DDD;
+}
+
+
+tr:hover {background-color: #D6EEEE;}
+</style>
+
+</head>
+<body>
+<h1>Programming Languages (895311)</h1>
+<a href="../../">Yoni Zohar</a><BR>
+Zvika Berger
+<BR>
+<a href="https://cs.biu.ac.il">Department of Computer Science</a>
+<BR>
+<a href="https://www.biu.ac.il">Bar-Ilan University</a>
+
+<h2> Technical Details </h2>
+<h3> Time and Location </h3>
+<ul>
+<li> Semester: BIU 2024/2025 Semester A </li>
+<li> Lectures: Sundays, 14:00 -- 17:00
+<li> Recitations: 
+Tuesdays, 
+14:00 -- 16:00, 
+16:00 -- 18:00,
+18:00 -- 20:00
+<li> Forum: in the <a href="https://lemida.biu.ac.il/">LAMDA (moodle)</a> system.
+</ul>
+
+<h3> Grading </h3>
+<ul>
+<li> The best between: 4 HW (30%) and exam (70%), or exam (100%) </li>
+<li> MOED A: 28.02.2025, 9:00 </li>
+<li> MOED B: 28.03.2025, 9:00 </li>
+<li> <a href="exam-2022-ex.pdf"> Exam Example</a> and <a href="exam-2024-appendix.pdf">Appendix (DAF NUSHAOT)</a> </li>
+<li><a href="exam-2024-a.pdf">This year's MOED A</a>
+<!-- <li><a href="pl2023a.pdf">Last year's MOED A</a></li>-->
+<!-- <li><a href="pl2023b.pdf">Last year's MOED B</a></li>-->
+<li> All HWs are <font color="red">not</font> mandatory.</li>
+</ul>
+
+<h3> Material </h3>
+<ul>
+<li><a href="https://www.cambridge.org/core/books/functional-approach-to-programming/27F7047FBF0962D02161E79B90BD7FD2">The Functional Approach to Programming</a> by Cousinaeau and Mauny</li>
+<li><a href="https://dev.realworldocaml.org">Real World OCaml</a> by Madhavapeddy and Minsky</li>
+<li><a href="https://link.springer.com/book/10.1007/978-1-84628-692-6">Semantics with Applications: An Appetizer</a> by Nielson and Nielson</li>
+<li><a href="https://mitpress.mit.edu/books/formal-semantics-programming-languages">The Formal Semantics of Programming Languages -- An Introduction</a> by Winskel</li>
+<li><a href="https://www.cis.upenn.edu/~bcpierce/tapl/">Types and Programming Languages</a> by Pierce </li>
+<li><a href="https://scholar.google.com/scholar?cluster=4048678582204326065&hl=en&as_sdt=0,5">
+Prolog Programming for Artificial Intelligence</a> by Ivan Bratko</li>
+<li><a href="https://www.amazon.com/JavaScript-Definitive-Guide-Activate-Guides/dp/0596805527">
+JavaScript: The Definitive Guide</a> by David Flanagan</li>
+<li>Other resources will be given as needed.</li>
+
+<li><a href="https://courses.biu.ac.il/CourseSylabusView.aspx?lid=775057">Syllabus</a>
+</li>
+</ul>
+
+<h2> Schedule </h2>
+The schedule will be updated during the semester.<BR>
+<BR>
+<table>
+<tr>
+<th> Date </th>
+<th> Lesson # </th>
+<th> Topics </th>
+<th> Reference </th>
+<th> HW </th>
+</tr>
+
+<tr>
+<td>3.11.24</td>
+<td> 1 </td>
+<td>
+Introduction<BR> 
+OCaml
+</td>
+<td> 
+Chapter 1 of "The Functional Approach to Programming"<BR>
+Real World OCaml <BR>
+<a href="utop1.txt">utop log </a>
+</td>
+<td> </td>
+</tr>
+
+<tr>
+<td>10.11.24</td>
+<td> 2 </td>
+<td>
+OCaml <BR>
+Induction
+</td>
+<td>
+Chapters 2, 3.4.4, 3.4.6, 3.4.8 of "The Functional Approach to Programming"<BR>
+Chapters 3.1, 3.3 of "The Formal Semantics of Programming Languages"<BR>
+<a href="utop2.txt">utop log </a>
+</td>
+<td> 
+HW 1<BR>
+Due 4.12.24
+</td>
+</tr>
+
+<tr>
+<td>17.11.24
+</td>
+<td> 3 </td>
+<td>
+Natural Semantics
+ </td>
+<td>
+Chapters 1 and 2.1 of "Semantics with Applications"
+</td>
+<td> </td>
+</tr>
+
+<tr>
+<td>24.11.24</td>
+<td> 4 </td>
+<td> 
+Axiomatic Semantics
+</td>
+<td> 
+Chapter 9 of "Semantics with Applications" <BR>
+<a href="ax.pdf">Derivation for factorial</a>
+</td>
+<td>
+</td>
+</tr>
+
+<tr>
+<td>1.12.24</td>
+<td> 5 </td>
+<td> 
+Untyped Lambda Calculus
+</td>
+<td>
+Chapter 5 of "Types and Programming Languages"<BR>
+<a href="https://www.ycombinator.com">Y Combinator</a><BR>
+</td>
+<td>
+HW 2
+<BR>
+Due 25.12.24
+</td>
+</tr>
+
+<tr>
+<td>8.12.24</td>
+<td> 6 </td>
+<td>
+Strategies
+<BR>
+Simply Typed Lambda Calculus I
+</td>
+<td>
+Chapters 5 and 9 of "Types and Programming Languages"<BR>
+<a href="https://www.ics.uci.edu/~lopes/teaching/inf212W12/readings/wasserrab.pdf">Type Safety for C++</a><br>
+<a href="stlc.pdf">Derivations in STLC</a><BR>
+<a href="type0.cpp">type0.cpp</a>
+<a href="type1.cpp">type1.cpp</a>
+<a href="type2.cpp">type2.cpp</a>
+</td>
+<td> </td>
+</tr>
+
+<tr>
+<td>15.12.24</td>
+<td> 7 </td>
+<td>
+Simply Typed Lambda Calculus II
+</td>
+<td>
+Chapters 9 and 12 of "Types and Programming Languages"<BR>
+ </td>
+<td>
+</td>
+</tr>
+
+<tr>
+<td>22.12.24</td>
+<td> 8 </td>
+<td>
+Type Inference
+</td>
+<td>
+Chapters 5.3 and 13 of "The Functional Approach to Programming" <BR>
+Chapter 22 of "Types and Programming Languages" <BR>
+<a href="https://www.cs.cornell.edu/courses/cs3110/2011sp/Lectures/lec26-type-inference/type-inference.htm">Cornell CS3110 notes on type inference</a>
+<BR>
+<a href="unification.ml">unification.ml</a>
+</td>
+<td>
+HW 3
+<BR>
+Due 22.1.25
+</td>
+</tr>
+
+<tr>
+<td>29.12.24<BR>
+</td>
+<td> -- </td>
+<td>
+Hanukkah</td>
+<td></td>
+<td>
+</td>
+</tr>
+
+
+<tr>
+<td>5.1.25</td>
+<td> 9  </td>
+<td>
+Closure
+</td>
+<td> 
+Chapters 3 and 11 of "The Functional Approach to Programming" <BR>
+<a href="scopes.pdf">Derivations from class</a>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>12.1.25</td>
+<td> 10 </td>
+<td> 
+Javascript
+</td>
+<td>
+Chapters 1 -- 9 of "Javascript: The Definitive Guide"
+<BR>
+<a href="MSC.pdf">CS Masters Program</a><BR>
+<a href="node_log.txt">node log</a><BR>
+<a href="js-examples.zip">examples from class</a>
+</td>
+<td></td>
+</tr>
+
+
+<tr>
+<td>19.1.25</td>
+<td> 11 </td>
+<td> 
+Logic Programming
+</td>
+<td>
+Chapters 1,2,3,5 of "Prolog Programming for Artificial Intelligence"<BR>
+<a href="prolog-examples.zip">examples from class</a><BR>
+<a href="swipl_log.txt">swipl log</a><BR>
+<a href="answers1.js">JS corners</a>
+</td>
+<td>
+HW 4
+<BR>
+Due 5.2.25
+</td>
+</tr>
+
+
+<tr>
+<td>26.1.25</td>
+<td> 12 </td>
+<td> 
+<b>
+<font color="blue">
+CS Masters Program Introductory Event<BR>
+(No Class)
+</font>
+</b>
+</td>
+<td>
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>2.2.25</td>
+<td> 13 </td>
+<td> 
+Imperative OCaml
+</td>
+<td>
+Chapter 4 of "The Functional Approach to Programming"<BR>
+<a href="https://cs3110.github.io/textbook/chapters/modules/intro.html">Cornell CS3110 notes on Modular Programming</a><BR>
+<a href="utop3.txt">utop log</a>
+</td>
+<td></td>
+</tr>
+
+
+</table>
+
+</body>
+
+</html>

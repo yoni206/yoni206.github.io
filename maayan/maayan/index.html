@@ -1,0 +1,67 @@
+<!DOCTYPE>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Gil</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<link rel="stylesheet" href="style.css" type="text/css" media="screen" />
+</head>
+<body bgcolor="white">
+<div id="content">
+	<h1>
+	
+	</h1>
+
+		
+			<div id="clickHere">
+<center>
+			<button>זה מה שגיל חושבת על זה</button>
+</center>
+			</div>
+			<li><div id="yoni"></div></li>  </div>
+		
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script>
+
+$(document).bind('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(e) {
+    var state = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
+    var event = state ? 'FullscreenOn' : 'FullscreenOff';
+    if (event == "FullscreenOff") {
+    	$('img').remove();  
+    }
+});
+
+(function(){
+	$('#clickHere').on("click", function(){
+	obj = document.getElementById('yoni');
+	
+	fullScreenFunc(obj);
+
+	});
+})();
+
+function fullScreenFunc(obj){
+
+	if (obj.requestFullscreen) {
+		obj.requestFullscreen();
+	}
+	else if (obj.mozRequestFullScreen) {
+		obj.mozRequestFullScreen();
+	}
+	else if (obj.webkitRequestFullScreen) {
+		obj.webkitRequestFullScreen();
+	} 
+	var img = $('<img />',{ id: 'Myid', src: 'images/maayan.jpg', alt:'MyAlt'}).appendTo($('#yoni'));
+
+}
+</script>
+
+
+<a href="delta-tomcat-vm:40123">click here</a>
+
+</body>
+</html>

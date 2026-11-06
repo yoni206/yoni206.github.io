@@ -1,0 +1,120 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<div style="background:#fff;border:1px solid #999;margin:-1px -1px 0;padding:0;">
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<title>AbstractSmv</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44993364-1', 'tau.ac.il');
+  ga('send', 'pageview');
+
+</script>
+	</head>
+	<body>
+		<div id="page-wrap">
+			
+			<DIV class="vcard">
+				<H1 style="Z-INDEX: 0" class="fn">AbstractSmv</H1>
+			</DIV>
+			<div id="objective">
+				<p>
+					Allowing abstract variables in NuSMV
+				</p>
+				
+			</div>
+			<div class="clear"></div>
+			<dl>
+				<dd class="clear">
+				</dd>
+				<dt>Background</dt>
+				<dd>
+					<ul>
+						<li>
+						<a href="http://nusmv.fbk.eu/" target="top">NuSMV </a> is a tool for formal verification using LTL, CTL and StateCharts. 
+						<li>
+						An .smv file normally consists of the following parts: VAR (decaration of variables), ASSIGN (declaration of an automaton) and SPEC or LTLSPEC (decleration of the specification).
+						<li>
+						This program provides the user the ability to:
+							<ul>
+								<li>
+								Use shortcuts for the "next" operator: when writing a specification like "the gate is open between the 3rd and the 7th time units", one usually writes something like X<sup>3,7</sup>(GATE_OPEN). Likewise, when writing a specification like "the gate is closed sometime between the 3rd and the 7th time units" one usually writes something like X <sub>3,7</sub>(GATE_CLOSED). I don't know of any way to write these shortcuts in NuSMV (instead, one writes the conjunction or disjunction of all the options). This program allows the user to write these shorcuts.
+								<li>
+								Use abstract variables: When writing a long specification, it is convenient to divide it into parts, naming those parts and then combining them. For example, it might be comfortable to write "(assumption1 & assumption2) -> (reuirement1 & requirement2)". This program allows the user to write such abstract variables, by the introduction of a forth part to the .smv file called "ABSTRACTIONS".
+							</li>
+							</ul>
+						</li>
+					</ul>
+				</dd>
+				
+				<dd class="clear">
+				</dd>
+				<dt>Usage</dt>
+				<dd>
+					<ul>
+						<li>
+						Input: an .asmv fie. This is an .smv file, possibly with an additional section in its end called "ABSTRACTIONS". This section contains a line-seperated definitions of abstract variables that are used in the SPEC (or LTLSPEC) section. In addition, the .asmv file may contain formulas like "X3^5(LIGHT)" (meaning that the light is on between the 3rd and 5th time units) and "X3_5(LIGHT)" (meaning that the light is on sometime between the 3rd and the 5th time units). 
+						<li>
+						Output: an .smv file that was obtained from the .asmv file by all the necessary replacements of shortcuts and abstract varaibles.
+						The output file is saved in the input file's directory.
+						<li>
+						Execution: 
+							<ul>
+								<li> 
+									<a href ="jars/abstractsmv.jar">Download the jar file.</a>
+								<li>
+									Go to the directory of the downloaded jar file.
+								<li>
+									Run "java -jar abstractsmv.jar <path-to-asmv-file>"
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</dd>
+				
+				<dd class="clear">
+				</dd>
+				<dt class="long">Example</dt>
+				<dd>	
+					<ul>
+						<li>
+							Input File: <a href="examples/abstract_example.asmv">abstract_example.asmv</a>
+						<li>
+							Command Line: java -jar abstractsmv.jar abstract_example.asmv
+						<li>	
+							Output File: <a href="examples/abstract_example.asmv.smv">abstract_example.smv</a>
+						
+						</li>
+					</ul>
+				</dd>
+				<dd class="clear">
+				</dd>
+				<dt class="long">Downloads</dt>
+				<dd>	
+					<ul>
+						<li>
+							Executable jar file: <a href="jars/abstractsmv.jar"> abstract.jar</a>
+						<li>
+							Source: <a href="jars/SmvAbstractVariablizer.java">SmvAbstractVariablizer.java</a>, <a href="jars/SmvUtils.java">SmvUtils.java</a>
+						</li>
+					</ul>
+				</dd>
+			</dl>
+			
+			
+			<div class="clear"></div>
+		</div>
+		
+		<a href="index.html"> Go back to my homepage</a>
+	</body>
+</html>

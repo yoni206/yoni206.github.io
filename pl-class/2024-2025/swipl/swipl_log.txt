@@ -1,0 +1,432 @@
+print(3).
+
+
+3
+[1mtrue.[0m
+
+print(0).
+
+
+0
+[1mtrue.[0m
+
+print(0).
+
+
+0
+[1mtrue.[0m
+
+print(0.33).
+
+
+0.3
+[1mtrue.[0m
+
+Action (h for help) ? EOF: exit (status 4)
+print(a).
+
+
+a
+[1mtrue.[0m
+
+print(b).
+
+
+b
+[1mtrue.[0m
+
+print(hello).
+
+
+hello
+[1mtrue.[0m
+
+print(a).
+
+
+a
+[1mtrue.[0m
+
+print(f(1,2)).
+
+
+f(1,2)
+[1mtrue.[0m
+
+print(g(a,b)).
+
+
+g(a,b)
+[1mtrue.[0m
+
+atom(a).
+
+
+[1mtrue.[0m
+
+print(atom(a)).
+
+
+atom(a)
+[1mtrue.[0m
+
+atom(a).
+
+
+[1mtrue.[0m
+
+atom(f(1,2)).
+
+
+[1;31mfalse.[0m
+
+atom(a).
+
+
+[1mtrue.[0m
+
+atom(f(1,2)).
+
+
+[1;31mfalse.[0m
+
+functor(f(a,b,c),X,Y).
+
+
+X = f,
+Y = 3.
+
+print(f(1,2)).
+
+
+f(1,2)
+[1mtrue.[0m
+
+print(g(a,b)).
+
+
+g(a,b)
+[1mtrue.[0m
+
+functor(f(a,b,c),f,3).
+
+
+[1mtrue.[0m
+
+functor(f(a,b,c),X,Y).
+
+
+X = f,
+Y = 3.
+
+functor(f(a,b,c),f,3).
+
+
+[1mtrue.[0m
+
+functor(f(a,b,c),f,2).
+
+
+[1;31mfalse.[0m
+
+functor(f(a,b,c),f,Y).
+
+
+Y = 3.
+
+functor(f(a,b,c),f,3).
+
+
+[1mtrue.[0m
+
+functor(f(a,b,c),f,2).
+
+
+[1;31mfalse.[0m
+
+functor(f(a,b,c),X,Y).
+
+
+X = f,
+Y = 3.
+
+assert(a).
+
+
+[1mtrue.[0m
+
+print(a).
+
+
+a
+[1mtrue.[0m
+
+print(a).
+
+
+a
+[1mtrue.[0m
+
+assert(a).
+
+
+[1mtrue.[0m
+
+assert(f(a,b)).
+
+
+[1mtrue.[0m
+
+assert(dog(dingo)).
+
+
+[1mtrue.[0m
+
+assert(a).
+
+
+[1mtrue.[0m
+
+assert(dog(dingo)).
+
+
+[1mtrue.[0m
+
+assert(cute(X) :- cat(X)).
+
+
+[1mtrue.[0m
+
+assert(cute(c) :- cat(c), nice(c)).
+
+
+[1;31mERROR: Uninstantiated argument expected, found nice(c) (2-nd argument)
+ERROR: In:
+ERROR:   [12] [34massert((cute(c):-cat(c)),nice(c))[0m[0m[1;31m
+ERROR:   [11] [34mtoplevel_call('<garbage_collected>')[0m[0m[1;31m at /opt/homebrew/Cellar/swi-prolog/9.2.9/lib/swipl/boot/toplevel.pl:1317
+[0massert((cute(c) :- cat(c), nice(c))).
+
+
+[1mtrue.[0m
+
+Action (h for help) ? Unknown option (h for help)
+Action (h for help) ? Unknown option (h for help)
+Action (h for help) ? EOF: exit (status 4)
+assert((cute(son_of(c)) :- cat(dad_of(c)))).
+
+
+[1mtrue.[0m
+
+assert((cute(son_of(c)) :- cat(dad_of(c)))).
+
+
+[1mtrue.[0m
+
+assert((cute(c) :- cat(c), nice(c))).
+
+
+[1mtrue.[0m
+
+cute(y).
+
+
+[1;31mfalse.[0m
+
+assert(cute(X) :- cat(X)).
+
+
+[1mtrue.[0m
+
+cat(f).
+
+
+[1;31mERROR: Unknown procedure: cat/1 (DWIM could not correct goal)
+[0mcat(d).
+
+
+[1;31mERROR: Unknown procedure: cat/1 (DWIM could not correct goal)
+[0m^  [1;35mException: [0m(4) setup_call_cleanup('$toplevel':notrace(call_repl_loop_hook(begin, 0)), '$toplevel':'$query_loop'(0), '$toplevel':notrace(call_repl_loop_hook(end, 0))) ? Unknown option (h for help)
+^  [1;35mException: [0m(4) setup_call_cleanup('$toplevel':notrace(call_repl_loop_hook(begin, 0)), '$toplevel':'$query_loop'(0), '$toplevel':notrace(call_repl_loop_hook(end, 0))) ? [Unknown option (h for help)
+^  [1;35mException: [0m(4) setup_call_cleanup('$toplevel':notrace(call_repl_loop_hook(begin, 0)), '$toplevel':'$query_loop'(0), '$toplevel':notrace(call_repl_loop_hook(end, 0))) ? Aalternatives
+[1m      [4] [0msetup_call_cleanup('$toplevel':notrace(call_repl_loop_hook(begin, 0)), '$toplevel':'$query_loop'(0), '$toplevel':notrace(call_repl_loop_hook(end, 0)))
+^  [1;35mException: [0m(4) setup_call_cleanup('$toplevel':notrace(call_repl_loop_hook(begin, 0)), '$toplevel':'$query_loop'(0), '$toplevel':notrace(call_repl_loop_hook(end, 0))) ? Unknown option (h for help)
+^  [1;35mException: [0m(4) setup_call_cleanup('$toplevel':notrace(call_repl_loop_hook(begin, 0)), '$toplevel':'$query_loop'(0), '$toplevel':notrace(call_repl_loop_hook(end, 0))) ? [Unknown option (h for help)
+^  [1;35mException: [0m(4) setup_call_cleanup('$toplevel':notrace(call_repl_loop_hook(begin, 0)), '$toplevel':'$query_loop'(0), '$toplevel':notrace(call_repl_loop_hook(end, 0))) ? Aalternatives
+[1m      [4] [0msetup_call_cleanup('$toplevel':notrace(call_repl_loop_hook(begin, 0)), '$toplevel':'$query_loop'(0), '$toplevel':notrace(call_repl_loop_hook(end, 0)))
+^  [1;35mException: [0m(4) setup_call_cleanup('$toplevel':notrace(call_repl_loop_hook(begin, 0)), '$toplevel':'$query_loop'(0), '$toplevel':notrace(call_repl_loop_hook(end, 0))) ? creep
+Action (h for help) ? EOF: exit (status 4)
+assert((cute(c) :- cat(c), nice(c))).
+
+
+[1mtrue.[0m
+
+cute(c).
+
+
+[1;31mERROR: Unknown procedure: cat/1
+ERROR: In:
+ERROR:   [13] [34mcat(c)[0m[0m[1;31m
+ERROR:   [12] [34mcute(c)[0m[0m[1;31m1-st clause of cute/1 <no source>
+ERROR:   [11] [34mtoplevel_call(user:user: ...)[0m[0m[1;31m at /opt/homebrew/Cellar/swi-prolog/9.2.9/lib/swipl/boot/toplevel.pl:1317
+[0m   [1;35mException: [0m(13) cat(c) ? 
+Action (h for help) ? 
+Action (h for help) ? EOF: exit (status 4)
+assert(p(a)).
+
+
+[1mtrue.[0m
+
+assert(p(a,b)).
+
+
+[1mtrue.[0m
+
+assert((p(X) :- q(X)));.
+
+
+[1;31mERROR: Syntax error: Unexpected `;' before `.'
+ERROR: assert((p(X) :- q(X)));
+ERROR: ** here **
+ERROR:  . 
+[0massert((p(X) :- q(X))).
+
+
+[1mtrue.[0m
+
+listing(p/1).
+
+
+:- dynamic p/1.
+
+p(a).
+p(A) :-
+    q(A).
+
+[1mtrue.[0m
+
+listing(p/1).
+
+
+:- dynamic p/1.
+
+p(a).
+p(A) :-
+    q(A).
+
+[1mtrue.[0m
+
+listing(p/2).
+
+
+:- dynamic p/2.
+
+p(a, b).
+
+[1mtrue.[0m
+
+listing(p/1).
+
+
+:- dynamic p/1.
+
+p(a).
+p(A) :-
+    q(A).
+
+[1mtrue.[0m
+
+Action (h for help) ? Unknown option (h for help)
+Action (h for help) ? Unknown option (h for help)
+Action (h for help) ? 
+Action (h for help) ? EOF: exit (status 4)
+(reverse-i-search)`': [0K(reverse-i-search)`f': cat(f).[0K(reverse-i-search)`fu': functor(f(a,b,c),X,Y).[0K(reverse-i-search)`fun': functor(f(a,b,c),X,Y).[0K(reverse-i-search)`func': functor(f(a,b,c),X,Y).[0K(reverse-i-search)`funct': functor(f(a,b,c),X,Y).[0K[0Kfunctor(f(a,b,c),X,Y).
+
+
+X = f,
+Y = 3.
+
+functor(f(a,b,c),f,2).
+
+
+[1;31mfalse.[0m
+
+functor(f(a,b,c),f,3).
+
+
+[1mtrue.[0m
+
+Action (h for help) ? EOF: exit (status 4)
+Action (h for help) ? EOF: exit (status 4)
+consult("parent1.pl")
+.
+
+
+[1mtrue.[0m
+
+parent(pam, bob).
+
+
+[1mtrue.[0m
+
+parent(pam, pam).
+
+
+[1;31mfalse.[0m
+
+ancestor(pam,bob).
+
+
+[1mtrue [0m.[1m.[0m
+
+ancestor(pam, ann).
+
+
+[1mtrue [0m.[1m.[0m
+
+Action (h for help) ? Unknown option (h for help)
+Action (h for help) ? aabort
+[32m% Execution Aborted
+[0m
+[32m% halt
+[0mconsult("parent1.pl").
+
+
+[1mtrue.[0m
+
+ancestor(pam, ann).
+
+
+[1mtrue [0m.[1m.[0m
+
+ancestor(pam, him).
+
+
+[1;31mfalse.[0m
+
+ancestor(pam, ann).
+
+
+[1mtrue [0m.[1m.[0m
+
+f(a,b,c).
+
+
+[1;31mERROR: Unknown procedure: f/3 (DWIM could not correct goal)
+[0mtrace.
+
+
+[1mtrue.[0m
+
+ancestor(pam, ann).
+
+
+   [1;32mCall: [0m(12) ancestor(pam, ann) ? creep
+   [1;32mCall: [0m(13) parent(pam, ann) ? creep
+   [1;31mFail: [0m(13) parent(pam, ann) ? creep
+   [1;33mRedo: [0m(12) ancestor(pam, ann) ? creep
+   [1;32mCall: [0m(13) parent(pam, _14708) ? creep
+   [1;32mExit: [0m(13) parent(pam, bob) ? creep
+   [1;32mCall: [0m(13) ancestor(bob, ann) ? 
+Action (h for help) ? Unknown option (h for help)
+Action (h for help) ? 
+Action (h for help) ? EOF: exit (status 4)

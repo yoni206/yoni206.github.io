@@ -1,0 +1,34 @@
+MODULE main
+VAR
+
+	LIGHT: {Red,Green};
+	TRAFFIC: boolean;
+	
+ASSIGN
+	init(LIGHT) := Green;
+	
+	TRANS (LIGHT=Green &
+			TRAFFIC)
+		->
+			(next(LIGHT)=Green);
+	TRANS (LIGHT=Green &
+			!TRAFFIC)
+		->
+		(next(LIGHT)=Red);
+	TRANS (LIGHT=Red &
+			TRAFFIC)
+		->
+		(next(LIGHT)=Green);
+	TRANS (LIGHT=Red &
+			!TRAFFIC)
+		->
+		(next(LIGHT)=Red);
+		
+LTLSPEC NAME myspec := assumptions -> requirements 
+ABSTRACTIONS
+
+assumptions = assumption1 & assumption2
+requirements = requirement1
+assumption1 = G F !TRAFFIC
+assumption2 = G (!TRAFFIC -> X1^2(TRAFFIC))
+requirement1 = G ( TRAFFIC -> (X0_3(LIGHT  = Green)))

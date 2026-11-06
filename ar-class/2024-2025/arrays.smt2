@@ -1,0 +1,20 @@
+(set-logic ALL)
+(declare-sort I 0)
+(declare-sort E 0)
+(declare-fun i () I)
+(declare-fun j () I)
+(declare-fun a () (Array I E))
+(declare-fun a_0 () (Array I E))
+(declare-fun a_1 () (Array I E))
+(declare-fun a_2 () (Array I E))
+(declare-fun tmp () E)
+
+
+(assert (= a_0 a))
+(assert (= tmp (select a_0 i)))
+(assert (= a_1 (store a_0 i (select a_0 j))))
+(assert (= a_2 (store a_1 j tmp)))
+(assert (= (select a i) (select a j)))
+(assert (distinct a a_2))
+
+(check-sat)

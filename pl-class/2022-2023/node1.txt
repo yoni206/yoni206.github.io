@@ -1,0 +1,215 @@
+1
+1;
+"a"
+'a'
+true
+false
+null
+{x:5, y:6}
+type(1)
+typeof(1)
+typeof(1.5)
+typeof(NaN)
+[1,"a",2]
+{x:1,y:2}
+{x:1,y:2}.x
+{x:1,y:2}.y
+{x:1,y:2}.z
+va rx
+var x
+x
+x=5
+var x=5
+x
+var x
+x
+
+var x
+x
+var x=5
+x
+x=6
+console.log("a")
+
+
+
+a
+
+
+
+
+
+
+
+
+var a
+a
+{a=5}
+{a=5}.b
+
+
+
+
+
+
+
+
+
+
+var a = 5;
+a
+this.a
+x =5
+y = 5
+x == y
+x === y
+o1 = {a: 1}
+o2 = {a: 1}
+o1 == o2
+o1 === o2
+o3 = o1
+o1 == o3
+o1 === o3
+1 == true
+2 == true
+1 === true
+"a" === "b"
+"a" === "a"
+
+1 == true
+1 === true
+null == undefined
+type(null)
+typeof(null)
+typeof(undefined)
+null == undefined
+null === undefined
+o1 = {a = 1}
+
+o1 = {a: 1}
+o3 = o1
+o3.a=2
+o1
+o3
+function f(x) {return x*x}
+f(3)
+var f = new Function("x", "return x*x")
+f(3)
+s = "return x*x"
+var f = new Function("x", s)
+f(3)
+function f(x) {return x*x}
+var f = new Function("x", s)
+var f = function(x) {return x*x}
+var f = function g(x) {return x*x}
+f(3)
+g(3)
+(function[D g(x) {return x*x})(3)
+
+(function g(x) {return x*x})(3)
+
+
+var f = function g(x) {return x*x}
+var g = f
+g(3)
+typeof(g)
+var x =5
+x
+var o = {f: function() {return 5}}
+o.f()
+var x = 3
+x
+(function() {var x = 4; x})()
+x
+{var x=4; x}
+x
+
+
+(function (x) {if (x<=1) return 1; else return x * arguments.callee(x-1);})(3)
+(function (x) {if (x<=1) return 1; else return x * arguments.callee(x-1);})(5)
+(function (x) {if (x<=1) return 1; else return x * arguments.caller(x-1);})(5)
+(function (x) {if (x<=1) return 1; else return x * arguments.caller}
+
+
+o = {a.1}
+o = {a:1}
+i
+o
+o.a
+o["a"]
+
+
+
+
+
+
+
+
+
+
+var o = new Object()
+var now = new Date()
+now
+var circle = {x: 0, y:0, radius: 2}
+circle
+node obj1.j	
+
+
+var book = new Object()
+book
+
+
+
+
+var o = {a:1, b:2}
+o.c
+o.a
+
+
+
+
+
+function Circle(x,y,r) {
+
+function Circle(x,y,r) {
+this.x = x
+this.y = y
+this.r = r
+}
+var c = new Circle(0,0, 1)
+c
+c.pi = 3.14
+c.pi
+c.pi * c.r
+var d = new Circle(0,0, 1)
+d.r
+d.x
+d.pi
+c.pi
+c
+d
+Circle.prototype.zero = 0
+c.zero
+d.zero
+c.toString()
+d.zero = 8
+c.zero
+d.prototype.zero = 9
+
+
+
+
+
+
+function Complex(x,y) {this.x = x; this.y = y}
+c = new Complex(1,1)
+c.constructor
+Complex.constructor
+var o = new Object()
+o
+o.hasOwnProperty("toString")
+o.hasOwnProperty("a")
+o.a = 1
+o.hasOwnProperty("a")
+eval("function mul(x,y) {return x*y}; mul(1,5);w")
+eval("function mul(x,y) {return x*y}; mul(1,5)")

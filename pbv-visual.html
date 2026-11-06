@@ -1,0 +1,2089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parametric Bit-Vectors: A Visual Explorer</title>
+    <!-- Three.js Core -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- OrbitControls for interaction -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    
+    <!-- Google Fonts for elegant typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- KaTeX for Math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+    <style>
+        :root {
+            --bg-color: #f8f9fa;
+            --text-primary: #2d3436;
+            --text-secondary: #636e72;
+            --accent: #6c5ce7;
+            --accent-light: #a29bfe;
+            --error: #ff7675;
+            --success: #00b894;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.6);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            cursor: grab; /* Indicate interactivity */
+        }
+
+        body:active {
+            cursor: grabbing;
+        }
+
+        #canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        /* UI Overlay */
+        .ui-layer {
+            position: absolute;
+            pointer-events: none;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        header {
+            pointer-events: auto;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            border: var(--glass-border);
+            box-shadow: var(--shadow);
+            max-width: 500px;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        p.subtitle {
+            margin: 0.5rem 0 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Header Links Menu */
+        .header-links {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+        }
+
+        .link-icon-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            transition: background 0.2s;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .link-icon-btn:hover {
+            background: rgba(0,0,0,0.05);
+            color: var(--accent);
+        }
+
+        .links-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 1px solid rgba(0,0,0,0.05);
+            padding: 0.5rem;
+            display: none;
+            flex-direction: column;
+            gap: 0.2rem;
+            min-width: 180px;
+            z-index: 100;
+            margin-top: 5px;
+        }
+
+        .links-menu.show {
+            display: flex;
+            animation: fadeIn 0.2s ease;
+        }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .links-menu a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            padding: 0.6rem 0.8rem;
+            border-radius: 6px;
+            transition: background 0.2s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .links-menu a:hover {
+            background: #f0f2f5;
+            color: var(--accent);
+        }
+
+        /* Controls Panel - 4 Lines Layout */
+        .controls-container {
+            pointer-events: auto;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: var(--glass-border);
+            box-shadow: var(--shadow);
+            width: 440px; /* Wider to fit 3 buttons */
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform-origin: bottom right;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 15;
+        }
+
+        /* Minimized State */
+        .controls-container.minimized {
+            opacity: 0;
+            transform: scale(0.8) translateY(20px);
+            pointer-events: none;
+        }
+
+        /* Restore Button */
+        .restore-btn {
+            pointer-events: auto;
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: scale(0.5);
+            z-index: 15;
+        }
+
+        .restore-btn.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .restore-btn.visible:hover {
+            transform: scale(1.1);
+        }
+
+        /* Minimize Icon inside Controls */
+        .minimize-icon {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: bold;
+            font-size: 1.2rem;
+            line-height: 1;
+            padding: 5px;
+            transition: color 0.2s;
+        }
+
+        .minimize-icon:hover {
+            color: var(--accent);
+        }
+
+        .control-group {
+            margin-bottom: 0;
+        }
+        
+        .input-row {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .input-row > .control-group {
+            flex: 1;
+        }
+
+        label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            color: var(--text-secondary);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            -webkit-appearance: none;
+            background: transparent;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            margin-top: -6px;
+            box-shadow: 0 2px 6px rgba(108, 92, 231, 0.4);
+        }
+
+        input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #dfe6e9;
+            border-radius: 2px;
+        }
+
+        /* Select dropdown */
+        select {
+            width: 100%;
+            padding: 0.4rem;
+            border-radius: 8px;
+            border: 1px solid #dfe6e9;
+            background: white;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+            outline: none;
+        }
+        
+        optgroup { font-style: normal; color: var(--text-secondary); }
+
+        /* Buttons */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 0;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #dfe6e9;
+            color: var(--text-secondary);
+            text-align: center;
+            white-space: nowrap;
+        }
+        
+        .btn:hover {
+            background: #b2bec3;
+        }
+
+        .btn.active, .btn.primary {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+        }
+        
+        .btn.secondary {
+            background: white;
+            border: 1px solid #dfe6e9;
+            color: var(--accent);
+        }
+        
+        .btn.secondary:hover {
+            background: #f0f0ff;
+        }
+
+        /* Equation Area */
+        .equation-area {
+            pointer-events: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-top: auto;
+            margin-bottom: auto;
+            align-self: flex-start;
+            max-width: 500px; /* Allow expansion */
+            z-index: 5; 
+        }
+
+        .equation-box {
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            border-left: 4px solid var(--accent);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            cursor: pointer;
+            transform-origin: left center;
+        }
+        
+        .equation-box:hover {
+            transform: translateX(5px);
+        }
+        
+        /* Ensure content is on new line */
+        .equation-box > div[id$="-formula"], 
+        .equation-box > span[id$="-formula"] {
+            display: block;
+            margin-top: 0.5rem;
+            line-height: 1.5;
+        }
+
+        /* Minimized style for left boxes */
+        .equation-box.box-minimized {
+            width: 40px;
+            padding: 1rem 0;
+            overflow: hidden;
+            white-space: nowrap;
+            border-left-width: 6px;
+        }
+        
+        .equation-box.box-minimized .equation-label,
+        .equation-box.box-minimized span,
+        .equation-box.box-minimized div, 
+        .equation-box.box-minimized .adm-status {
+            display: none;
+        }
+        
+        .equation-box.box-minimized::after {
+            content: "▶";
+            display: block;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+
+        .equation-label {
+            display: inline-block; /* Changed to allow hover trigger on text */
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0; /* Removed bottom margin as formula has top margin */
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            pointer-events: auto;
+        }
+
+        /* Specific styling for interactive titles */
+        .title-trigger {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: underline dotted;
+            color: var(--text-secondary); /* Default color same as labels */
+        }
+        
+        .title-trigger:hover {
+            color: var(--accent) !important;
+            text-decoration: underline;
+        }
+
+        .adm-violation {
+            border-left-color: var(--error) !important;
+            background: #fff5f5 !important;
+        }
+        
+        .adm-valid {
+            border-left-color: var(--success) !important;
+        }
+
+        .adm-status {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .math-term {
+            display: inline-block;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        
+        .highlight-blue { background-color: rgba(116, 185, 255, 0.2); color: #0984e3; }
+        .highlight-pink { background-color: rgba(255, 118, 117, 0.2); color: #d63031; }
+        .highlight-purple { background-color: rgba(162, 155, 254, 0.2); color: #6c5ce7; }
+        .highlight-green { background-color: rgba(85, 239, 196, 0.2); color: #00b894; }
+        .highlight-orange { background-color: rgba(253, 203, 110, 0.2); color: #e17055; }
+
+        /* Elimination Panel (Back to Top Right) */
+        .elimination-panel {
+            pointer-events: auto;
+            position: absolute;
+            top: 2rem;
+            right: 2rem; /* Right */
+            left: auto;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 1.2rem;
+            border-radius: 12px;
+            border: var(--glass-border);
+            box-shadow: var(--shadow);
+            max-width: 320px;
+            display: none; 
+            transform-origin: top right;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 10;
+        }
+        
+        /* Evaluation Panel & Theory Panel & ADM Panel */
+        .eval-panel, .theory-panel, .adm-definition-panel {
+            pointer-events: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            padding: 2rem;
+            border-radius: 16px;
+            border: var(--glass-border);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            max-width: 900px;
+            width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            display: none;
+            z-index: 20;
+        }
+        
+        .eval-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .eval-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .eval-tab {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-secondary);
+            border-bottom: 3px solid transparent;
+        }
+        
+        .eval-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .data-table th {
+            text-align: left;
+            padding: 0.8rem;
+            background: #f8f9fa;
+            color: var(--text-secondary);
+            border-bottom: 2px solid #eee;
+        }
+        
+        .data-table td {
+            padding: 0.8rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .data-table tr:hover {
+            background-color: #fcfcfc;
+        }
+        
+        .highlight-best {
+            font-weight: bold;
+            color: var(--success);
+        }
+        
+        .analysis-box {
+            background: #f0fdfa;
+            border: 1px solid #ccfbf1;
+            padding: 1rem;
+            border-radius: 8px;
+            color: #0f766e;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        /* Architecture Viewer */
+        .arch-panel {
+            pointer-events: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            padding: 2rem;
+            border-radius: 16px;
+            border: var(--glass-border);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            width: 95vw;
+            max-width: 1000px;
+            max-height: 90vh;
+            display: none;
+            flex-direction: column;
+            z-index: 30;
+        }
+        
+        .arch-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem 0;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .arch-box {
+            border: 2px solid #2d3436;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: white;
+            position: relative;
+        }
+        
+        .arch-box:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+        }
+        
+        .arch-group {
+            border: 1px dashed #b2bec3;
+            padding: 20px;
+            border-radius: 12px;
+            background: #f8f9fa;
+            position: relative;
+        }
+        
+        .arch-group-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+        
+        .arrow {
+            margin: 0 15px;
+            font-size: 1.2rem;
+            color: #b2bec3;
+        }
+        
+        .arch-content {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            border: 1px solid #eee;
+            overflow-y: auto;
+            flex-grow: 1;
+            display: none; /* Hidden initially */
+        }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .panel-header {
+            margin: 0 0 1rem 0;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+
+        .elimination-formula {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            color: var(--text-primary);
+            background: rgba(255,255,255,0.5);
+            padding: 0.5rem;
+            border-radius: 6px;
+            border-left: 3px solid var(--success);
+        }
+        
+        /* Architecture Table Styles */
+        .arch-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+        }
+        
+        .arch-table th {
+            text-align: left;
+            background: #e0e0e0;
+            padding: 8px;
+            position: sticky;
+            top: 0;
+        }
+        
+        .arch-table td {
+            border-bottom: 1px solid #ddd;
+            padding: 6px 8px;
+            background: white;
+        }
+        
+        .check-green { color: var(--success); font-weight: bold; }
+        .cross-red { color: var(--error); font-weight: bold; }
+        
+        .hidden { display: none !important; }
+        
+        /* Theory Table Styles */
+        .theory-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+        }
+        .theory-table th {
+            background: #eef2ff;
+            color: var(--accent);
+            padding: 10px;
+            text-align: left;
+            border-bottom: 2px solid var(--accent-light);
+        }
+        .theory-table td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* ADM Table */
+        .adm-table td {
+            font-family: 'JetBrains Mono', monospace;
+            padding: 6px 10px;
+        }
+        .adm-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        /* Instruction overlay for controls */
+        .instructions {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.65rem; /* Smaller */
+            color: var(--text-secondary);
+            opacity: 0.4; /* More faded */
+            pointer-events: none;
+            text-align: center;
+            font-weight: 300; /* Lighter weight */
+            letter-spacing: 0.05em;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="canvas-container"></div>
+
+    <div class="ui-layer">
+        <header>
+            <h1>Parametric Bit-Vector Lab</h1>
+            <div class="header-links">
+                <button id="links-btn" class="link-icon-btn" title="Resources">🔗</button>
+                <div class="links-menu" id="links-menu">
+                    <a href="https://drops.dagstuhl.de/storage/00lipics/lipics-vol341-sat2025/html/LIPIcs.SAT.2025.4/LIPIcs.SAT.2025.4.html" target="_blank">📄 Paper (HTML)</a>
+                    <a href="https://drops.dagstuhl.de/storage/00lipics/lipics-vol341-sat2025/LIPIcs.SAT.2025.4/LIPIcs.SAT.2025.4.pdf" target="_blank">📄 Paper (PDF)</a>
+                    <a href="https://drive.google.com/file/d/1pZEH_HBJPsJI9LTHcCPO_6eFG9i_qmG-/view?usp=sharing" target="_blank">🎓 My Thesis</a>
+                    <a href="https://drive.google.com/file/d/1aqSpFR4h9NoWgAzObZb5VIVocHnehwCE/view?usp=sharing" target="_blank">📊 SAT'25 Slides</a>
+                    <a href="https://zenodo.org/records/15143242" target="_blank">📦 Artifact</a>
+                    <a href="https://github.com/BergerZvika/smt-switch" target="_blank">💻 Github</a>
+                </div>
+            </div>
+            <p class="subtitle">
+                Visualize Bit-Vector operations with symbolic width <strong>k</strong>.
+            </p>
+        </header>
+
+        <!-- Elimination Panel (Top Right) -->
+        <div class="elimination-panel" id="elim-panel">
+            <h3 class="panel-header">Elimination Rule</h3>
+            <div class="elimination-formula" id="elim-formula">
+                <!-- Injected via JS -->
+            </div>
+            <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.5rem; line-height: 1.3;">
+                This operator is eliminated by rewriting it into Addition and Bitwise AND.
+            </p>
+        </div>
+        
+        <!-- ADM Function Panel (Popup) -->
+        <div class="adm-definition-panel" id="adm-def-panel">
+            <span class="eval-close" id="adm-def-close">×</span>
+            <h2 style="margin-top:0; margin-bottom: 1rem;">Algorithm 1: Function ADM</h2>
+            <p style="color:var(--text-secondary); margin-top:0;">Recursively constructs admissibility constraints.</p>
+            
+            <table class="theory-table adm-table">
+                <thead>
+                    <tr><th>Match Expression <em>e</em></th><th>Constraint</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>x (PBV variable)</td><td>Bw(e) > 0</td></tr>
+                    <tr><td>z (Int constant)</td><td>True (⊤)</td></tr>
+                    <tr><td>to-pbv(k, t)</td><td>Bw(e) > 0 ∧ ADM(t)</td></tr>
+                    <tr><td>|t|</td><td>ADM(t)</td></tr>
+                    <tr><td>t[i:j]</td><td>0 ≤ j ≤ i < Bw(t) ∧ ADM(t)</td></tr>
+                    <tr><td>ext_z(n, t)</td><td>n ≥ 0 ∧ ADM(t)</td></tr>
+                    <tr><td>ext_s(n, t)</td><td>n ≥ 0 ∧ ADM(t)</td></tr>
+                    <tr><td>t1 ∘ t2</td><td>ADM(t1) ∧ ADM(t2)</td></tr>
+                    <tr><td>ite<sub>PBV</sub>(t1, t2, t3)</td><td>Bw(t2) ≈ Bw(t3) ∧ ⋀ ADM(t<sub>i</sub>)</td></tr>
+                    <tr><td>Other Binary Ops (x ⋄ y)</td><td>Bw(t1) ≈ Bw(t2) ∧ ADM(t1) ∧ ADM(t2)</td></tr>
+                </tbody>
+            </table>
+
+            <h2 style="margin-top:1.5rem; margin-bottom: 1rem;">Algorithm 2: Function Bw</h2>
+            <p style="color:var(--text-secondary); margin-top:0;">Computes the bit-width of PBV-terms.</p>
+            
+            <table class="theory-table adm-table">
+                <thead>
+                    <tr><th>Match Expression <em>e</em></th><th>Width</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>x (PBV variable)</td><td>|x|</td></tr>
+                    <tr><td>to-pbv(k, t)</td><td>k</td></tr>
+                    <tr><td>t[i:j]</td><td>i - j + 1</td></tr>
+                    <tr><td>ext_z(n, t)</td><td>Bw(t) + n</td></tr>
+                    <tr><td>ext_s(n, t)</td><td>Bw(t) + n</td></tr>
+                    <tr><td>t1 ∘ t2</td><td>Bw(t1) + Bw(t2)</td></tr>
+                    <tr><td>ite<sub>PBV</sub>(t1, t2, t3)</td><td>Bw(t2)</td></tr>
+                    <tr><td>Other Ops (⋄(t1...tn))</td><td>Bw(t1)</td></tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- TRANS Function Panel (Popup) -->
+        <div class="adm-definition-panel" id="trans-def-panel" style="display:none;">
+            <span class="eval-close" id="trans-def-close">×</span>
+            <h2 style="margin-top:0; margin-bottom: 1rem;">Algorithm 3: Translation Function TRANS</h2>
+            <p style="color:var(--text-secondary); margin-top:0;">Translates PBV formulas to Integer Arithmetic.</p>
+            
+            <div style="font-family: 'JetBrains Mono', monospace; background: #f9f9f9; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <strong>function</strong> TRANS(φ)<br>
+                &nbsp;&nbsp;<strong>return</strong> CONV(φ) ∧ RANGE(φ) ∧ ADM(φ)
+            </div>
+            
+            <h3>Function CONV (Conversion Table)</h3>
+            <table class="theory-table adm-table" id="conv-table">
+                <thead>
+                    <tr><th>PBV Term</th><th>Integer Arithmetic (IA)</th></tr>
+                </thead>
+                <tbody>
+                     <!-- Injected via JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Range Function Panel (Popup) -->
+        <div class="adm-definition-panel" id="range-def-panel" style="display:none; z-index:25;">
+            <span class="eval-close" id="range-def-close">×</span>
+            <h2 style="margin-top:0; margin-bottom: 1rem;">Algorithm 4: Function RANGE</h2>
+            <p style="color:var(--text-secondary); margin-top:0;">Recursively constructs size and range constraints.</p>
+            
+            <div style="font-family: 'JetBrains Mono', monospace; background: #f9f9f9; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <strong>function</strong> RANGE(e)<br>
+                &nbsp;&nbsp;<strong>match</strong> e:
+            </div>
+            
+            <table class="theory-table adm-table">
+                <tbody>
+                    <tr><td>x (PBV variable)</td><td>→ 0 ≤ χ(x) < pow<sub>2</sub>(κ(x))</td></tr>
+                    <tr><td>|t|</td><td>→ e ≈ Bw(t) ∧ RANGE(t)</td></tr>
+                    <tr><td>z (Int constant)</td><td>→ ⊤</td></tr>
+                    <tr><td>•(t<sub>1</sub>...t<sub>n</sub>)</td><td>→ ⋀<sub>i=1</sub><sup>n</sup> RANGE(t<sub>i</sub>)</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Theory Panel -->
+        <div class="theory-panel" id="theory-panel">
+            <span class="eval-close" id="theory-close">×</span>
+            <h2 style="margin-top:0; margin-bottom: 1.5rem;">Parametric Bit-Vector Theory Signatures</h2>
+            
+            <h3>Table 1: Signature Σ<sub>IA</sub> (Integer Arithmetic)</h3>
+            <table class="theory-table">
+                <thead><tr><th>Symbol</th><th>SMT-LIB Syntax</th><th>Arity</th></tr></thead>
+                <tbody>
+                    <tr><td>≈<sub>Int</sub>, ≉<sub>Int</sub></td><td>=, distinct</td><td>Int × Int → Bool</td></tr>
+                    <tr><td>0, 1, 2, ...</td><td>0, 1, 2, ...</td><td>Int</td></tr>
+                    <tr><td>+, -, ·, div, mod</td><td>+, -, *, div, mod</td><td>Int × Int → Int</td></tr>
+                    <tr><td>≤, ≥, &lt;, &gt;</td><td>&lt;=, &gt;=, &lt;, &gt;</td><td>Int × Int → Bool</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Table 2: Signatures Σ<sub>PBV</sub> and Σ<sub>IA</sub>(pow<sub>2</sub>, &amp;<sup>ℕ</sup>)</h3>
+            <div style="background:#f8f9fa; padding:0.5rem; border-left:4px solid var(--accent); margin-bottom:0.5rem;">Σ<sub>PBV</sub> = Σ<sub>IA</sub> + the following operators</div>
+            <table class="theory-table">
+                <thead><tr><th>Symbol</th><th>SMT-LIB Syntax</th><th>Arity</th></tr></thead>
+                <tbody>
+                    <tr><td>≈<sub>PBV</sub>, ≉<sub>PBV</sub></td><td>=, distinct</td><td>PBV × PBV → Bool</td></tr>
+                    <tr><td>&lt;<sub>u</sub>, &gt;<sub>u</sub>, &lt;<sub>s</sub>, &gt;<sub>s</sub></td><td>bvult, bvugt, bvslt, bvsgt</td><td>PBV × PBV → Bool</td></tr>
+                    <tr><td>≤<sub>u</sub>, ≥<sub>u</sub>, ≤<sub>s</sub>, ≥<sub>s</sub></td><td>bvule, bvuge, bvsle, bvsge</td><td>PBV × PBV → Bool</td></tr>
+                    <tr><td>~, -<sup>B</sup></td><td>bvnot, bvneg</td><td>PBV → PBV</td></tr>
+                    <tr><td>&amp;, |, ⊕</td><td>bvand, bvor, bvxor</td><td>PBV × PBV → PBV</td></tr>
+                    <tr><td>&lt;&lt;, &gt;&gt;, &gt;&gt;<sub>a</sub></td><td>bvshl, bvlshr, bvashr</td><td>PBV × PBV → PBV</td></tr>
+                    <tr><td>+<sup>B</sup>, -<sup>B</sup></td><td>bvadd, bvsub</td><td>PBV × PBV → PBV</td></tr>
+                    <tr><td>·<sup>B</sup>, mod<sup>B</sup>, div<sup>B</sup></td><td>bvmul, bvurem, bvudiv</td><td>PBV × PBV → PBV</td></tr>
+                    <tr><td>_[_ : _]</td><td>pextract</td><td>PBV × Int × Int → PBV</td></tr>
+                    <tr><td>∘</td><td>concat</td><td>PBV × PBV → PBV</td></tr>
+                    <tr><td>ext<sub>z</sub></td><td>pzero_extend</td><td>Int × PBV → PBV</td></tr>
+                    <tr><td>ext<sub>s</sub></td><td>psign_extend</td><td>Int × PBV → PBV</td></tr>
+                    <tr><td>|_|</td><td>bvsize</td><td>PBV → Int</td></tr>
+                    <tr><td>to-pbv</td><td>int_to_pbv</td><td>Int × Int → PBV</td></tr>
+                </tbody>
+            </table>
+            
+            <div style="background:#f8f9fa; padding:0.5rem; border-left:4px solid var(--accent); margin-bottom:0.5rem;">Σ<sub>IA</sub>(pow<sub>2</sub>, &amp;<sup>ℕ</sup>) = Σ<sub>IA</sub> + the following operators</div>
+            <table class="theory-table">
+                <thead><tr><th>Symbol</th><th>SMT-LIB Syntax</th><th>Arity</th></tr></thead>
+                <tbody>
+                    <tr><td>&amp;<sup>ℕ</sup></td><td>piand</td><td>Int × Int × Int → Int</td></tr>
+                    <tr><td>pow<sub>2</sub></td><td>pow2</td><td>Int → Int</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Evaluation Panel (Overlay) -->
+        <div class="eval-panel" id="eval-panel">
+            <span class="eval-close" id="eval-close">×</span>
+            <h2 style="margin-top:0; margin-bottom: 1.5rem;">Performance Evaluation</h2>
+            
+            <div class="eval-tabs">
+                <div class="eval-tab active" onclick="switchTab('results')">Main Results (Table 6)</div>
+                <div class="eval-tab" onclick="switchTab('config')">Configurations (Table 5)</div>
+            </div>
+
+            <div id="tab-results">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Benchmark</th>
+                            <th>#</th>
+                            <th>BASELINE</th>
+                            <th>EAGER</th>
+                            <th>PBV (Ours)</th>
+                            <th>VBS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>alive</td><td>200</td><td>71</td><td>93</td><td class="highlight-best">107</td><td>124</td></tr>
+                        <tr><td>ic</td><td>180</td><td>43</td><td>58</td><td class="highlight-best">77</td><td>81</td></tr>
+                        <tr><td>rewrite</td><td>2006</td><td>658</td><td>1221</td><td class="highlight-best">1331</td><td>1382</td></tr>
+                        <tr><td>syrew</td><td>1500</td><td>558</td><td>720</td><td class="highlight-best">912</td><td>951</td></tr>
+                        <tr><td>lemmas</td><td>70</td><td>12</td><td>14</td><td class="highlight-best">23</td><td>23</td></tr>
+                        <tr><td>icfb</td><td>46</td><td>1</td><td>9</td><td class="highlight-best">12</td><td>12</td></tr>
+                        <tr><td>mut</td><td>9441</td><td>669</td><td>1084</td><td class="highlight-best">4863</td><td>4915</td></tr>
+                        <tr style="background:#eef2ff; font-weight:600;"><td>TOTAL</td><td>13443</td><td>2012</td><td>3199</td><td class="highlight-best">7325</td><td>7488</td></tr>
+                        <tr><td style="font-weight:600; color:#2d3436;">sat</td><td></td><td>0</td><td>0</td><td class="highlight-best">3641</td><td>3641</td></tr>
+                        <tr><td style="font-weight:600; color:#2d3436;">unsat</td><td></td><td>2012</td><td>3199</td><td class="highlight-best">3684</td><td>3847</td></tr>
+                        <tr><td style="font-weight:600; color:#2d3436;">unique</td><td></td><td>24</td><td>57</td><td class="highlight-best">4222</td><td>4303</td></tr>
+                        <tr><td style="font-weight:600; color:#2d3436;">time [s]</td><td></td><td>709k</td><td>634k</td><td class="highlight-best">375k</td><td>355k</td></tr>
+                    </tbody>
+                </table>
+                <button class="btn btn-block primary" id="analyze-btn">Analyze Results</button>
+                <div class="analysis-box" id="analysis-content">
+                    <strong>Key Insights:</strong>
+                    <ul>
+                        <li><strong>PBV Dominance:</strong> Configuration PBV solves <strong>7,325</strong> instances, more than <strong>3.5x</strong> the Baseline (2,012) and <strong>2x</strong> the Eager approach (3,199).</li>
+                        <li><strong>Speed:</strong> On common instances, PBV is more than <strong>18x faster</strong> than the Eager approach (375k seconds vs 634k seconds).</li>
+                        <li><strong>Unsat Performance:</strong> PBV excels at finding UNSAT results (3,684 vs 2,012 for Baseline).</li>
+                        <li><strong>Satisfiability:</strong> Baseline and Eager solve <strong>0</strong> satisfiable instances due to quantifier overhead. PBV solves <strong>3,641</strong>.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="tab-config" style="display:none;">
+                 <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Feature</th>
+                            <th>BASELINE</th>
+                            <th>EAGER</th>
+                            <th>PBV</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Target Theory</td><td>T<sub>IA</sub>(pow2, &<sup>ℕ</sup>, |<sup>ℕ</sup>, ⊕<sup>ℕ</sup>)</td><td>T<sub>IA</sub>(pow2, &<sup>ℕ</sup>)</td><td>T<sub>IA</sub>(pow2<sub>★</sub>, &<sub>★</sub><sup>ℕ</sup>)</td></tr>
+                        <tr><td>Multiple Bit-widths</td><td><span class="cross-red">✕</span></td><td><span class="check-green">✓</span></td><td class="highlight-best"><span class="check-green">✓</span></td></tr>
+                        <tr><td>Lazy pow2</td><td><span class="cross-red">✕</span></td><td><span class="cross-red">✕</span></td><td class="highlight-best"><span class="check-green">✓</span></td></tr>
+                        <tr><td>Lazy &</td><td><span class="cross-red">✕</span></td><td><span class="cross-red">✕</span></td><td class="highlight-best"><span class="check-green">✓</span></td></tr>
+                        <tr><td>|-elimination</td><td><span class="cross-red">✕</span></td><td><span class="check-green">✓</span></td><td><span class="check-green">✓</span></td></tr>
+                        <tr><td>⊕-elimination</td><td><span class="cross-red">✕</span></td><td><span class="check-green">✓</span></td><td><span class="check-green">✓</span></td></tr>
+                         <tr><td>>> without mod</td><td><span class="cross-red">✕</span></td><td><span class="check-green">✓</span></td><td><span class="check-green">✓</span></td></tr>
+                        <tr><td>New lemmas for &</td><td><span class="cross-red">✕</span></td><td><span class="check-green">✓</span></td><td><span class="check-green">✓</span></td></tr>
+                        <tr><td>New lemmas for pow2</td><td><span class="cross-red">✕</span></td><td><span class="check-green">✓</span></td><td><span class="check-green">✓</span></td></tr>
+                        <tr><td>No redundant axioms</td><td><span class="cross-red">✕</span></td><td><span class="check-green">✓</span></td><td><span class="check-green">✓</span></td></tr>
+                        <tr><td>RW<sub>B</sub></td><td><span class="cross-red">✕</span></td><td><span class="check-green">✓</span></td><td><span class="check-green">✓</span></td></tr>
+                        <tr><td>mod-reduction</td><td><span class="cross-red">✕</span></td><td><span class="check-green">✓</span></td><td><span class="check-green">✓</span></td></tr>
+                    </tbody>
+                </table>
+                <p style="font-size: 0.9rem; color: var(--text-secondary);">
+                    <strong>Note:</strong> PBV uses a lazy, quantifier-free translation which allows it to reason about multiple bit-widths and satisfiable instances much more effectively.
+                </p>
+            </div>
+        </div>
+        
+        <!-- Architecture Panel -->
+        <div class="arch-panel" id="arch-panel">
+            <span class="eval-close" id="arch-close">×</span>
+            <h2 style="margin-top:0; margin-bottom: 1rem;">System Architecture</h2>
+            <p style="color:var(--text-secondary); margin-bottom:0;">Click any component to see its internal logic (tables/algorithms).</p>
+            
+            <div class="arch-diagram">
+                <div style="display:flex; align-items:center;">
+                    <div style="font-family:'JetBrains Mono'; font-size:1.2rem; margin-right:15px;">φ<sub>0</sub></div>
+                    <div class="arrow">→</div>
+                    
+                    <div class="arch-group">
+                        <div style="display:flex; align-items:center;">
+                            <div class="arch-box" onclick="showArchInfo('rw')">RW<sub>B</sub></div>
+                            <div class="arrow" style="font-size:0.9rem; color:var(--text-primary);">φ<sub>1</sub> →</div>
+                            <div class="arch-box" onclick="showArchInfo('trans')">TRANS</div>
+                        </div>
+                        <div class="arch-group-label">smt-switch</div>
+                    </div>
+                    
+                    <div class="arrow" style="font-size:0.9rem; color:var(--text-primary);"> → φ<sub>2</sub> → </div>
+                    
+                    <div class="arch-group">
+                        <div style="text-align:center; margin-bottom:10px; font-family:'JetBrains Mono'; font-weight:bold;">SOLVE<sub>★</sub></div>
+                        <div class="arch-box" style="margin-bottom:5px;" onclick="showArchInfo('pow2')">pow<sub>2</sub>-solver</div>
+                        <div class="arch-box" onclick="showArchInfo('piand')">&<sup>ℕ</sup>-solver</div>
+                        <div class="arch-group-label">cvc5</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arch-content" id="arch-content">
+                <strong id="arch-title" style="font-size:1.2rem; display:block; margin-bottom:10px; color:var(--accent);"></strong>
+                <div id="arch-body"></div>
+            </div>
+        </div>
+
+        <!-- Left Side: Equations -->
+        <div class="equation-area">
+            
+            <!-- PBV Formula -->
+            <div class="equation-box" id="bv-box" title="Click to Minimize">
+                <span class="equation-label">PBV Formula</span>
+                <span id="bv-formula"><span class="math-term highlight-blue">x</span> <span class="math-term">∘</span> <span class="math-term highlight-pink">y</span></span>
+            </div>
+
+            <!-- Translation -->
+            <div class="equation-box" id="ia-box" title="Click to Minimize">
+                <span class="equation-label" id="trans-title-trigger" class="title-trigger">Integer Translation</span>
+                <span id="ia-formula"><span class="math-term highlight-blue">x</span> · 2<sup><span class="math-term highlight-purple">k</span></sup> + <span class="math-term highlight-pink">y</span></span>
+            </div>
+            
+            <!-- Range Constraints -->
+            <div class="equation-box" id="range-box" title="Click to see Function RANGE">
+                <span class="equation-label" id="range-title-trigger" class="title-trigger">Range Constraints</span>
+                <div id="range-formula" style="margin-top: 5px; line-height: 1.4;">
+                    <!-- Content injected by JS -->
+                </div>
+            </div>
+
+            <!-- Admissibility -->
+            <div class="equation-box" id="adm-box" title="Click to see Function ADM">
+                <span class="equation-label" id="adm-title-trigger" class="title-trigger">Admissibility Constraints</span>
+                <div id="adm-formula" style="margin-top: 5px; line-height: 1.4;">
+                    <!-- Content injected by JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Bottom: Controls (4 LINES) -->
+        <div class="controls-container" id="controls-container">
+            <span class="minimize-icon" id="minimize-btn" title="Minimize Controls">−</span>
+            
+            <!-- Line 1: Operator -->
+            <div class="control-group">
+                <label>Operator</label>
+                <select id="operator-select">
+                    <optgroup label="Arithmetic">
+                        <option value="add">Addition (+_B)</option>
+                        <option value="sub">Subtraction (-_B)</option>
+                        <option value="mul">Multiplication (*)</option>
+                        <option value="udiv">Unsigned Division (/)</option>
+                        <option value="urem">Unsigned Remainder (%)</option>
+                    </optgroup>
+                    <optgroup label="Bitwise & Shifts">
+                        <option value="and">Bitwise AND (&_B)</option>
+                        <option value="or">Bitwise OR (|)</option>
+                        <option value="xor">Bitwise XOR (⊕)</option>
+                        <option value="not">Bitwise NOT (~)</option>
+                        <option value="neg">Negation (-)</option>
+                        <option value="shl">Shift Left (<<)</option>
+                        <option value="lshr">Logical Right Shift (>>)</option>
+                    </optgroup>
+                    <optgroup label="Word Operators">
+                        <option value="concat">Concatenation (∘)</option>
+                        <option value="ext_z">Zero Extend (ext_z)</option>
+                        <option value="ext_s">Sign Extend (ext_s)</option>
+                        <option value="extract">Extraction (extract)</option>
+                    </optgroup>
+                </select>
+            </div>
+
+            <!-- Line 2: Width K -->
+            <div class="control-group">
+                <label>
+                    <span>Parametric Width (k)</span>
+                    <span id="width-val">4</span>
+                </label>
+                <input type="range" id="width-slider" min="1" max="8" step="1" value="4">
+            </div>
+
+            <!-- Line 3: Inputs Side by Side -->
+            <div class="input-row">
+                <div class="control-group" id="x-control">
+                    <label>
+                        <span>Value X</span>
+                        <span id="x-val">2</span>
+                    </label>
+                    <input type="range" id="x-slider" min="0" max="15" step="1" value="2">
+                </div>
+                
+                <div class="control-group" id="y-control">
+                    <label>
+                        <span>Value Y</span>
+                        <span id="y-val">3</span>
+                    </label>
+                    <input type="range" id="y-slider" min="0" max="15" step="1" value="3">
+                </div>
+                
+                <div class="control-group hidden" id="n-control">
+                    <label>
+                        <span>Parameter (n)</span>
+                        <span id="n-val">2</span>
+                    </label>
+                    <input type="range" id="n-slider" min="0" max="6" step="1" value="2">
+                </div>
+
+                <div class="control-group hidden" id="i-control">
+                    <label>
+                        <span>High (i)</span>
+                        <span id="i-val">2</span>
+                    </label>
+                    <input type="range" id="i-slider" min="0" max="7" step="1" value="2">
+                </div>
+                
+                <div class="control-group hidden" id="j-control">
+                    <label>
+                        <span>Low (j)</span>
+                        <span id="j-val">0</span>
+                    </label>
+                    <input type="range" id="j-slider" min="0" max="7" step="1" value="0">
+                </div>
+            </div>
+
+            <!-- Line 4: Buttons -->
+            <div class="btn-group">
+                <button class="btn secondary" id="btn-theory">PBV Theory</button>
+                <button class="btn secondary" id="btn-arch">Lazy Architecture</button>
+                <button class="btn secondary" id="btn-eval">Evaluation</button>
+            </div>
+        </div>
+        
+        <!-- Restore Button (Hidden by default) -->
+        <button id="restore-btn" class="restore-btn" title="Show Controls">⚙️</button>
+
+        <div class="instructions">
+            Left Click: Rotate | Right Click: Pan | Scroll: Zoom
+        </div>
+    </div>
+
+    <script>
+        // --- Toggle Menu Logic ---
+        document.getElementById('links-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('links-menu').classList.toggle('show');
+        });
+
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('links-menu');
+            const btn = document.getElementById('links-btn');
+            if (!menu.contains(e.target) && e.target !== btn) {
+                menu.classList.remove('show');
+            }
+        });
+        
+        // --- Box Toggle Logic ---
+        const equationBoxes = document.querySelectorAll('.equation-box');
+        equationBoxes.forEach(box => {
+            box.addEventListener('click', (e) => {
+                // If specific title trigger clicked, don't minimize
+                if (e.target.classList.contains('title-trigger') || e.target.id === 'adm-title-trigger' || e.target.id === 'range-title-trigger') return;
+                box.classList.toggle('box-minimized');
+            });
+        });
+        
+        document.getElementById('adm-title-trigger').addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('adm-def-panel').style.display = 'block';
+        });
+        
+        document.getElementById('adm-def-close').addEventListener('click', () => {
+             document.getElementById('adm-def-panel').style.display = 'none';
+        });
+        
+        document.getElementById('trans-title-trigger').addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('trans-def-panel').style.display = 'block';
+            // Populate table if empty
+            if(document.querySelector('#conv-table tbody').innerHTML.trim() === '') {
+                 let html = '';
+                 translationRules.forEach(r => {
+                    html += `<tr><td>${r.pbv}</td><td>${r.ia}</td></tr>`;
+                 });
+                 document.querySelector('#conv-table tbody').innerHTML = html;
+            }
+        });
+        
+        document.getElementById('trans-def-close').addEventListener('click', () => {
+             document.getElementById('trans-def-panel').style.display = 'none';
+        });
+        
+        document.getElementById('range-title-trigger').addEventListener('click', (e) => {
+            e.stopPropagation();
+            document.getElementById('range-def-panel').style.display = 'block';
+        });
+        
+        document.getElementById('range-def-close').addEventListener('click', () => {
+             document.getElementById('range-def-panel').style.display = 'none';
+        });
+
+
+        // --- Data Tables from Paper ---
+        
+        const rewriteRules = [
+            { name: "bv-concat-extract-merge", term: "(concat (extract k (+ j 1) s) (extract j i s))", rewritten: "(extract k i s)" },
+            { name: "bv-extract-extract", term: "(extract l k (extract j i x))", rewritten: "(extract (+ i l) (+ i k) x)" },
+            { name: "bv-extract-whole", term: "(extract k_x 0 x)", rewritten: "x" },
+            { name: "bv-add-zero", term: "(bvadd x 0)", rewritten: "x" },
+            { name: "bv-reverse-extract-and", term: "(bvand (extract j i x) (extract j i y))", rewritten: "(extract j i (bvand x y))" },
+            { name: "bv-xor-simplify-2", term: "(bvxor x (bvnot x))", rewritten: "(bvnot 0)" },
+            { name: "bv-or-zero", term: "(bvor x (int_to_pbv k 0))", rewritten: "x" },
+            { name: "bv-mul-one", term: "(bvmul x (int_to_pbv k 1))", rewritten: "x" },
+            { name: "bv-mul-zero", term: "(bvmul x (int_to_pbv k 0))", rewritten: "(int_to_pbv k 0)" },
+            { name: "bv-zero-extend-eliminate", term: "(zero-extend 0 x)", rewritten: "x" },
+            { name: "bv-sign-extend-eliminate", term: "(sign-extend 0 x)", rewritten: "x" },
+            { name: "bv-not-neq", term: "(= x (bvnot x))", rewritten: "false" },
+            { name: "bv-neg-sub", term: "(bvneg (bvsub x y))", rewritten: "(bvsub y x)" },
+            { name: "bv-neg-idemp", term: "(bvneg (bvneg x))", rewritten: "x" },
+            { name: "bv-ugt-eliminate", term: "(bvugt x y)", rewritten: "(bvult y x)" },
+            { name: "bv-uge-eliminate", term: "(bvuge x y)", rewritten: "(bvule y x)" },
+            { name: "bv-sgt-eliminate", term: "(bvsgt x y)", rewritten: "(bvslt y x)" },
+            { name: "bv-sge-eliminate", term: "(bvsge x y)", rewritten: "(bvsle y x)" },
+            { name: "bv-shl-by-const-0", term: "(bvshl x (int_to_pbv k 0))", rewritten: "x" },
+            { name: "bv-shl-by-const-2", term: "(bvshl x (int_to_pbv k k))", rewritten: "(int_to_pbv k 0)" },
+            { name: "bv-lshr-by-const-0", term: "(bvlshr x (int_to_pbv k 0))", rewritten: "x" },
+            { name: "bv-lshr-by-const-2", term: "(bvlshr x (int_to_pbv k k))", rewritten: "(int_to_pbv k 0)" },
+            { name: "bv-ashr-by-const-0", term: "(bvashr x (int_to_pbv k 0))", rewritten: "x" },
+            { name: "bv-bitwise-idemp-2", term: "(bvor x x)", rewritten: "x" },
+            { name: "bv-or-one", term: "(bvor x (bvnot x))", rewritten: "(bvnot (int_to_pbv k 0))" },
+            { name: "bv-xor-duplicate", term: "(bvxor x x)", rewritten: "(int_to_pbv k 0)" },
+            { name: "bv-xor-zero", term: "(bvxor x (int_to_pbv k 0))", rewritten: "x" },
+            { name: "bv-bitwise-not-or", term: "(bvor x (bvnot x))", rewritten: "(bvnot (int_to_pbv k 0))" },
+            { name: "bv-xor-not", term: "(bvxor (bvnot x) (bvnot y))", rewritten: "(bvxor x y)" },
+            { name: "bv-not-idemp", term: "(bvnot (bvnot x))", rewritten: "x" },
+            { name: "bv-ult-zero-1", term: "(bvult (int_to_pbv k 0) x)", rewritten: "(not (= x (int_to_pbv k 0)))" },
+            { name: "bv-ult-zero-2", term: "(bvult x (int_to_pbv k 0))", rewritten: "false" },
+            { name: "bv-ult-self", term: "(bvult x x)", rewritten: "false" },
+            { name: "bv-lt-self", term: "(bvslt x x)", rewritten: "false" },
+            { name: "bv-ule-self", term: "(bvule x x)", rewritten: "true" },
+            { name: "bv-ule-zero", term: "(bvule x (int_to_pbv k 0))", rewritten: "(= x (int_to_pbv k 0))" },
+            { name: "bv-zero-ule", term: "(bvule (int_to_pbv k 0) x)", rewritten: "true" },
+            { name: "bv-sle-self", term: "(bvsle x x)", rewritten: "true" },
+            { name: "bv-ule-max", term: "(bvule x (bvnot x))", rewritten: "true" },
+            { name: "bv-udiv-zero", term: "(bvudiv x (int_to_pbv k 0))", rewritten: "(bvnot (int_to_pbv k 0))" },
+            { name: "bv-udiv-one", term: "(bvudiv x (int_to_pbv k 1))", rewritten: "x" },
+            { name: "bv-urem-one", term: "(bvurem x (int_to_pbv k 1))", rewritten: "(int_to_pbv k 0)" },
+            { name: "bv-urem-self", term: "(bvurem x (int_to_pbv k 1))", rewritten: "(int_to_pbv k 0)" },
+            { name: "bv-shl-zero", term: "(bvshl (int_to_pbv k 0) x)", rewritten: "(int_to_pbv k 0)" },
+            { name: "bv-lshr-zero", term: "(bvlshr (int_to_pbv k 0) x)", rewritten: "(int_to_pbv k 0)" },
+            { name: "bv-ashr-zero", term: "(bvashr (int_to_pbv k 0) x)", rewritten: "(int_to_pbv k 0)" },
+            { name: "bv-ult-one", term: "(bvult x (int_to_pbv k 1))", rewritten: "(= x (int_to_pbv k 0))" }
+        ];
+
+        const translationRules = [
+            { pbv: "x (variable)", ia: "χ(x)" },
+            { pbv: "to-pbv(k, t)", ia: "CONV(t) mod pow2(k)" },
+            { pbv: "t1 = t2", ia: "CONV(t1) ≈ CONV(t2)" },
+            { pbv: "t1 <_u t2", ia: "CONV(t1) < CONV(t2)" },
+            { pbv: "t1 >_u t2", ia: "CONV(t2) < CONV(t1)" },
+            { pbv: "t1 <_s t2", ia: "uts(κ(t1), CONV(t1)) < uts(κ(t2), CONV(t2))" },
+            { pbv: "t1 >_s t2", ia: "uts(κ(t1), CONV(t1)) > uts(κ(t2), CONV(t2))" },
+            { pbv: "t1 +_B t2", ia: "(CONV(t1) + CONV(t2)) mod pow2(κ(t1))" },
+            { pbv: "t1 -_B t2", ia: "(CONV(t1) - CONV(t2)) mod pow2(κ(t1))" },
+            { pbv: "t1 * t2", ia: "(CONV(t1) * CONV(t2)) mod pow2(κ(t1))" },
+            { pbv: "t1 div_u t2", ia: "ite(CONV(t2) ≈ 0, pow2(κ(t1)) - 1, CONV(t1) div CONV(t2))" },
+            { pbv: "t1 rem_u t2", ia: "ite(CONV(t2) ≈ 0, CONV(t1), CONV(t1) mod CONV(t2))" },
+            { pbv: "~t", ia: "pow2(κ(t)) - (CONV(t) + 1)" },
+            { pbv: "-t", ia: "(pow2(κ(t)) - CONV(t)) mod pow2(κ(t))" },
+            { pbv: "t1 << t2", ia: "(CONV(t1) * pow2(CONV(t2))) mod pow2(κ(t1))" },
+            { pbv: "t1 >> t2", ia: "CONV(t1) div pow2(CONV(t2))" },
+            { pbv: "t1 & t2", ia: "&ℕ(κ(t1), CONV(t1), CONV(t2))" },
+            { pbv: "t1 | t2", ia: "CONV(t1) + CONV(t2) - &ℕ(κ(t1), CONV(t1), CONV(t2))" },
+            { pbv: "t1 ^ t2", ia: "CONV(t1) + CONV(t2) - 2 * &ℕ(κ(t1), CONV(t1), CONV(t2))" },
+            { pbv: "concat(t1, t2)", ia: "CONV(t1) * pow2(κ(t2)) + CONV(t2)" },
+            { pbv: "ext_z(n, t)", ia: "CONV(t)" },
+            { pbv: "ext_s(n, t)", ia: "ite(CONV(t[κ(t)-1]) ≈ 1, (pow2(n)-1)*pow2(κ(t)) + CONV(t), CONV(t))" },
+            { pbv: "t[i:j]", ia: "(CONV(t) div pow2(j)) mod pow2(i - j + 1)" },
+            { pbv: "•(t1, ..., tn)", ia: "•(CONV(t1), ..., CONV(tn))" }
+        ];
+
+        const lemmas = {
+            pow2: [
+                { name: "positive", formula: "x ≥ 0 ⇒ pow2(x) > 0" },
+                { name: "even", formula: "x ≥ 1 ⇒ pow2(x) mod 2 ≈ 0" },
+                { name: "div", formula: "x ≥ 0 ⇒ x div pow2(x) ≈ 0" },
+                { name: "neg (New)", formula: "x < 0 ⇒ pow2(x) ≈ 0" },
+                { name: "bound (New)", formula: "(7 ≤ v ∧ v ≤ x) ⇒ v·x + v² < pow2(x)" },
+                { name: "value (New)", formula: "(0 ≤ x ∧ x ≈ v) ⇒ pow2(x) ≈ 2^v" },
+                { name: "monotonicity", formula: "(0 ≤ x ∧ x < y) ⇒ pow2(x) < pow2(y)" }
+            ],
+            piand: [
+                { name: "base", formula: "(k > 0 ∧ x ≈ 1 ∧ y ≈ 1) ⇒ &ℕ(k,x,y) ≈ 1" },
+                { name: "max", formula: "(k > 0 ∧ ⟨x⟩_k ∧ y ≈ pow2(k)-1) ⇒ &ℕ(k,x,y) ≈ x" },
+                { name: "min", formula: "y ≈ 0 ⇒ &ℕ(k,x,y) ≈ 0" },
+                { name: "idem", formula: "(k > 0 ∧ ⟨x⟩_k ∧ x ≈ y) ⇒ &ℕ(k,x,y) ≈ x" },
+                { name: "contra", formula: "(x+y) mod pow2(k) ≈ pow2(k)-1 ⇒ &ℕ(k,x,y) ≈ 0" },
+                { name: "range", formula: "0 ≤ x ∧ 0 ≤ y ⇒ 0 ≤ &ℕ(k,x,y) ≤ min(x,y)" },
+                { name: "empty (New)", formula: "k ≤ 0 ⇒ &ℕ(k,x,y) ≈ 0" },
+                { name: "lsb (New)", formula: "x mod 2 ≈ 0 ⇒ &ℕ(k,x,y) mod 2 ≈ 0" },
+                { name: "one (New)", formula: "(k > 0 ∧ y ≈ 1) ⇒ &ℕ(k,x,y) ≈ x mod 2" },
+                { name: "sum_ge (New)", formula: "(k≥v ∧ v>0 ∧ ⟨x⟩_v ∧ ⟨y⟩_v) ⇒ &ℕ(k,x,y) ≈ &ℕ(v,x,y)" },
+                { name: "sym", formula: "(x ≈ w ∧ y ≈ z) ⇒ &ℕ(k,x,y) ≈ &ℕ(k,z,w)" },
+                { name: "diff", formula: "(k>0 ∧ z≈w ∧ x≠y ∧ ⟨x⟩_k ∧ ⟨y⟩_k ∧ ⟨z⟩_k) ⇒ (&ℕ(k,x,z)≠y ∨ &ℕ(k,y,w)≠x)" }
+            ]
+        };
+        
+        const archInfo = {
+            'rw': { title: "Rewriter (RW_B) - Appendix A", type: "rewrite" },
+            'trans': { title: "Translation (TRANS) - Algorithm 3", type: "trans" },
+            'pow2': { title: "pow2-solver - Table 3", type: "pow2" },
+            'piand': { title: "&ℕ-solver - Table 4", type: "piand" }
+        };
+
+        // --- Configuration ---
+        const config = {
+            colorX: 0x74b9ff, // Blue
+            colorY: 0xff7675, // Pink
+            colorResult: 0xa29bfe, // Purple
+            colorGhost: 0xb2bec3, // Ghost color for extensions
+            colorSign: 0x74b9ff, // Sign bit color
+            gridColor: 0xe0e0e0,
+            bgColor: 0xf8f9fa,
+            admValidColor: 0x00b894,
+            admInvalidColor: 0xff7675
+        };
+
+        // --- Scene Setup ---
+        const container = document.getElementById('canvas-container');
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(config.bgColor);
+        scene.fog = new THREE.Fog(config.bgColor, 10, 60);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(5, 8, 20);
+        camera.lookAt(2, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        container.appendChild(renderer.domElement);
+
+        // --- Orbit Controls ---
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true; // Smooth motion
+        controls.dampingFactor = 0.05;
+        controls.minDistance = 5;
+        controls.maxDistance = 50;
+        controls.maxPolarAngle = Math.PI / 2 + 0.2; 
+
+        // --- Lighting ---
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.7);
+        dirLight.position.set(10, 20, 10);
+        dirLight.castShadow = true;
+        scene.add(dirLight);
+
+        // --- Grid ---
+        const gridHelper = new THREE.GridHelper(40, 40, 0xccd6e0, 0xe1e8ef);
+        scene.add(gridHelper);
+
+        // --- State ---
+        const state = {
+            op: 'add', // Default to arithmetic per request
+            k: 4, 
+            n: 2, // Parameter for extensions/shifts
+            i: 2, // High index for extract
+            j: 0, // Low index for extract
+            valX: 2,
+            valY: 3,
+            mode: 'IA', // Default to IA mode since we are focusing on translation lemmas
+            isAdm: true,
+            activeLemma: null,
+            titleSprite: null
+        };
+
+        // --- Object Management ---
+        const objects = {
+            xContainer: new THREE.Group(),
+            yContainer: new THREE.Group(),
+            resContainer: new THREE.Group(),
+            labelsContainer: new THREE.Group(),
+            titleContainer: new THREE.Group()
+        };
+        scene.add(objects.xContainer);
+        scene.add(objects.yContainer);
+        scene.add(objects.resContainer);
+        scene.add(objects.labelsContainer);
+        scene.add(objects.titleContainer);
+
+        // --- Geometry Utilities ---
+        const geometry = new THREE.BoxGeometry(0.9, 0.9, 0.9);
+        
+        function createBitMesh(color, x, y, z, isGhost = false, customOpacity = null) {
+            const opacity = customOpacity !== null ? customOpacity : (isGhost ? 0.4 : 0.9);
+            const material = new THREE.MeshStandardMaterial({ 
+                color: color,
+                roughness: 0.1,
+                metalness: 0.1,
+                transparent: true,
+                opacity: opacity,
+                wireframe: isGhost
+            });
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.set(x, y, z);
+            mesh.castShadow = !isGhost;
+            mesh.receiveShadow = true;
+            
+            const edges = new THREE.EdgesGeometry(geometry);
+            const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 }));
+            mesh.add(line);
+            
+            return mesh;
+        }
+
+        function createLabel(text, x, y, z, scale = 1, color = '#2d3436', align = 'left', fontSize = 40) {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = 800; // Wider canvas for longer text
+            canvas.height = 128;
+            context.font = `bold ${fontSize}px "JetBrains Mono", sans-serif`;
+            context.fillStyle = color;
+            context.textAlign = align; 
+            context.textBaseline = 'middle';
+            context.shadowColor = "rgba(0,0,0,0.1)";
+            context.shadowBlur = 4;
+            
+            const xPos = align === 'left' ? 10 : (align === 'center' ? 400 : 790);
+            context.fillText(text, xPos, 64); 
+
+            const texture = new THREE.CanvasTexture(canvas);
+            // Switched to MeshBasicMaterial to fix orientation relative to world
+            const material = new THREE.MeshBasicMaterial({ 
+                map: texture, 
+                transparent: true, 
+                side: THREE.DoubleSide,
+                depthTest: true,
+                depthWrite: false 
+            });
+            
+            const width = 8 * scale;
+            const height = 1.7 * scale;
+            const geometry = new THREE.PlaneGeometry(width, height);
+
+            // Adjust pivot based on alignment to match Sprite behavior
+            if (align === 'left') {
+                geometry.translate(width / 2, 0, 0);
+            } else if (align === 'right') {
+                geometry.translate(-width / 2, 0, 0);
+            }
+            
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.set(x, y, z);
+            
+            return mesh;
+        }
+
+        // --- Logic: Update Visuals ---
+        function updateScene() {
+            objects.xContainer.clear();
+            objects.yContainer.clear();
+            objects.resContainer.clear();
+            objects.labelsContainer.clear();
+            
+            // Removed updateTitle() call as requested
+
+            // Update Max Values based on k
+            const maxVal = Math.pow(2, state.k) - 1;
+            if(state.valX > maxVal) state.valX = maxVal;
+            if(state.valY > maxVal) state.valY = maxVal;
+            
+            // Constraints for Extract
+            if (state.op === 'extract') {
+                if (state.i >= state.k) state.i = state.k - 1;
+                if (state.j > state.i) state.j = state.i;
+                
+                // Update sliders to reflect constrained values
+                document.getElementById('i-slider').value = state.i;
+                document.getElementById('j-slider').value = state.j;
+                document.getElementById('i-val').textContent = state.i;
+                document.getElementById('j-val').textContent = state.j;
+            }
+
+            // Determine Operator Type
+            const unaryOps = ['not', 'neg', 'ext_z', 'ext_s', 'extract'];
+            const isUnary = unaryOps.includes(state.op);
+            const isExt = ['ext_z', 'ext_s'].includes(state.op);
+            
+            const bitsX = state.valX.toString(2).padStart(state.k, '0').split('').reverse();
+            const bitsY = state.valY.toString(2).padStart(state.k, '0').split('').reverse();
+            
+            let bitsRes = [];
+            let resVal = 0;
+            let resWidth = state.k;
+
+            // Logic Calculation
+            if (state.op === 'concat') {
+                resVal = state.valX * Math.pow(2, state.k) + state.valY;
+                resWidth = state.k * 2;
+            } else if (state.op === 'add') {
+                resVal = (state.valX + state.valY) % Math.pow(2, state.k);
+            } else if (state.op === 'sub') {
+                resVal = (state.valX - state.valY + Math.pow(2, state.k)) % Math.pow(2, state.k);
+            } else if (state.op === 'mul') {
+                resVal = (state.valX * state.valY) % Math.pow(2, state.k);
+            } else if (state.op === 'udiv') {
+                resVal = state.valY === 0 ? Math.pow(2, state.k) - 1 : Math.floor(state.valX / state.valY);
+            } else if (state.op === 'urem') {
+                resVal = state.valY === 0 ? state.valX : state.valX % state.valY;
+            } else if (state.op === 'and') {
+                resVal = state.valX & state.valY;
+            } else if (state.op === 'or') {
+                resVal = state.valX | state.valY;
+            } else if (state.op === 'xor') {
+                resVal = state.valX ^ state.valY;
+            } else if (state.op === 'shl') {
+                resVal = (state.valX << state.n) % Math.pow(2, state.k);
+            } else if (state.op === 'lshr') {
+                resVal = state.valX >>> state.n;
+            } else if (state.op === 'not') {
+                resVal = (~state.valX >>> 0) & (Math.pow(2, state.k) - 1);
+            } else if (state.op === 'neg') {
+                resVal = (Math.pow(2, state.k) - state.valX) % Math.pow(2, state.k);
+            } else if (state.op === 'ext_z') {
+                resVal = state.valX; 
+                resWidth = state.k + state.n;
+            } else if (state.op === 'ext_s') {
+                resWidth = state.k + state.n;
+                const msb = bitsX[state.k - 1];
+                resVal = state.valX;
+                if (msb === '1') {
+                     // Add the upper bits value
+                     for(let i=0; i<state.n; i++) {
+                         resVal += Math.pow(2, state.k + i);
+                     }
+                }
+            } else if (state.op === 'extract') {
+                resVal = (state.valX >>> state.j) & (Math.pow(2, state.i - state.j + 1) - 1);
+                resWidth = state.i - state.j + 1;
+            }
+
+            bitsRes = resVal.toString(2).padStart(resWidth, '0').split('').reverse();
+
+            const spacing = 1.1;
+            const xRowY = 3.5; 
+            const yRowY = 2.5; // Raised
+            const resRowY = 0.8; // Lowered to 0.8
+            
+            // All rows at same Z for flat view
+            const zDepth = 0;
+            
+            const labelX = 1.5; 
+
+            // X
+            for (let i = 0; i < state.k; i++) {
+                const bitVal = parseInt(bitsX[i]);
+                let color = bitVal === 1 ? config.colorX : 0xdfe6e9;
+                let opacity = 0.9; // Standard opacity
+                let isGhost = false;
+
+                if (state.op === 'extract') {
+                    // Dim bits outside range [j, i]
+                    if (i < state.j || i > state.i) {
+                        opacity = 0.3;
+                    } else {
+                        // Highlight bits inside range
+                    }
+                }
+                
+                let xPos = -i * spacing;
+                if (state.op === 'concat') {
+                    // In concat, X is MSB, shifted left of Y
+                    xPos = -(state.k + i) * spacing; 
+                }
+
+                const mesh = createBitMesh(color, xPos, xRowY, zDepth, isGhost, opacity);
+                mesh.material.color.setHex(color);
+                objects.xContainer.add(mesh);
+            }
+            
+            // Operator Sign Label
+            let opSym = "";
+            let opY = 3.0; // Default height between X (3.5) and Y (2.5)
+            let opX = 1.0; // Shifted left
+            
+            if(state.op === 'add') opSym = "+";
+            else if(state.op === 'sub') opSym = "-";
+            else if(state.op === 'mul') opSym = "*";
+            else if(state.op === 'udiv') opSym = "/";
+            else if(state.op === 'urem') opSym = "%";
+            else if(state.op === 'and') opSym = "&";
+            else if(state.op === 'or') opSym = "|";
+            else if(state.op === 'xor') opSym = "⊕";
+            else if(state.op === 'shl') opSym = "≪";
+            else if(state.op === 'lshr') opSym = "≫";
+            else if(state.op === 'concat') opSym = "∘";
+            else if(state.op === 'not') {
+                opSym = "~";
+                opY = xRowY; // Same line as X
+            }
+            else if(state.op === 'neg') {
+                opSym = "-";
+                opY = xRowY; // Same line as X
+            }
+            
+            if(opSym && state.op !== 'extract') { // Hide extract operator sign
+                 // Position: Between X and Y, shifted left. 
+                 // Reduced scale to 0.8
+                 objects.labelsContainer.add(createLabel(opSym, opX, opY, zDepth, 0.8, config.accent, 'center'));
+            }
+
+            // Y (Only for Binary Ops)
+            let yLabelText = `y: ${state.valY} (${state.valY.toString(2).padStart(state.k, '0')})`;
+            
+            if (!isUnary && !['shl', 'lshr'].includes(state.op)) {
+                for (let i = 0; i < state.k; i++) {
+                    const bitVal = parseInt(bitsY[i]);
+                    const color = bitVal === 1 ? config.colorY : 0xdfe6e9;
+                    const opacity = bitVal === 1 ? 1.0 : 0.3;
+                    
+                    const mesh = createBitMesh(color, -i * spacing, yRowY, zDepth);
+                    mesh.material.color.setHex(color);
+                    mesh.material.opacity = opacity;
+                    objects.yContainer.add(mesh);
+                }
+                objects.labelsContainer.add(createLabel(yLabelText, labelX, yRowY, zDepth));
+            } else if (['shl', 'lshr'].includes(state.op)) {
+                 objects.labelsContainer.add(createLabel(`n: ${state.n}`, labelX, yRowY, zDepth));
+            } else if (isExt) {
+                 objects.labelsContainer.add(createLabel(`Extend n: ${state.n}`, labelX, yRowY, zDepth));
+            } else if (state.op === 'extract') {
+                 objects.labelsContainer.add(createLabel(`Extract [${state.i}:${state.j}]`, labelX, yRowY, zDepth));
+            }
+            
+            // Equals Sign (Only show for binary ops or operations that result in a new value)
+            // For extract, it's also appropriate.
+            objects.labelsContainer.add(createLabel("=", labelX, (yRowY + resRowY) / 2, zDepth, 1.0, config.accent, 'center'));
+
+            // Result
+            for (let i = 0; i < resWidth; i++) {
+                const bitVal = i < bitsRes.length ? parseInt(bitsRes[i]) : 0;
+                let color = bitVal === 1 ? config.colorResult : 0xdfe6e9;
+                let isGhost = false;
+                let customOpacity = null;
+                
+                if (isExt && i >= state.k) {
+                    if (state.op === 'ext_s' && bitVal === 1) {
+                        // Sign extended bits: Faded purple fill
+                        color = config.colorResult;
+                        isGhost = false;
+                        customOpacity = 0.4;
+                    } else {
+                        // Zero extensions: Ghost wireframe
+                        isGhost = true;
+                        color = config.colorGhost;
+                    }
+                }
+                
+                const mesh = createBitMesh(color, -i * spacing, resRowY, zDepth, isGhost, customOpacity);
+                mesh.material.color.setHex(color);
+                objects.resContainer.add(mesh);
+            }
+
+            // Labels
+            const binX = state.valX.toString(2).padStart(state.k, '0');
+            const binRes = resVal.toString(2).padStart(resWidth, '0');
+            
+            objects.labelsContainer.add(createLabel(`x: ${state.valX} (${binX})`, labelX, xRowY, zDepth));
+            objects.labelsContainer.add(createLabel(`Result: ${resVal} (${binRes})`, labelX, resRowY, zDepth));
+
+            updateUI();
+            applyIATransformation();
+        }
+
+        function applyIATransformation() {
+            if (state.op === 'concat') {
+                gsap.to(objects.xContainer.position, { y: 0, duration: 0.5 }); 
+            } 
+        }
+
+        function resetPositions() {
+             gsap.to(objects.xContainer.position, { x: 0, y: 0, z: 0, duration: 0.5 });
+             gsap.to(objects.yContainer.position, { x: 0, y: 0, z: 0, duration: 0.5 });
+        }
+
+        // --- UI Logic ---
+        const ui = {
+            bvFormula: document.getElementById('bv-formula'),
+            iaFormula: document.getElementById('ia-formula'),
+            admFormula: document.getElementById('adm-formula'),
+            rangeFormula: document.getElementById('range-formula'),
+            admBox: document.getElementById('adm-box'),
+            admIcon: document.getElementById('adm-icon'),
+            iaBox: document.getElementById('ia-box'),
+            bvBox: document.getElementById('bv-box'),
+            rangeBox: document.getElementById('range-box'),
+            elimPanel: document.getElementById('elim-panel'),
+            elimFormula: document.getElementById('elim-formula'),
+            controlsContainer: document.getElementById('controls-container'),
+            restoreBtn: document.getElementById('restore-btn'),
+            minimizeBtn: document.getElementById('minimize-btn'),
+            evalPanel: document.getElementById('eval-panel'),
+            archPanel: document.getElementById('arch-panel'),
+            theoryPanel: document.getElementById('theory-panel'),
+            archContent: document.getElementById('arch-content'),
+            archBody: document.getElementById('arch-body'),
+            archTitle: document.getElementById('arch-title'),
+            
+            valDisplay: {
+                k: document.getElementById('width-val'),
+                x: document.getElementById('x-val'),
+                y: document.getElementById('y-val'),
+                n: document.getElementById('n-val'),
+                i: document.getElementById('i-val'),
+                j: document.getElementById('j-val')
+            },
+            sliders: {
+                x: document.getElementById('x-slider'),
+                y: document.getElementById('y-slider'),
+                n: document.getElementById('n-slider'),
+                i: document.getElementById('i-slider'),
+                j: document.getElementById('j-slider')
+            },
+            groups: {
+                y: document.getElementById('y-control'),
+                n: document.getElementById('n-control'),
+                i: document.getElementById('i-control'),
+                j: document.getElementById('j-control')
+            }
+        };
+        
+        // Tab Switching for Evaluation
+        window.switchTab = function(tabName) {
+            document.querySelectorAll('.eval-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('[id^="tab-"]').forEach(t => t.style.display = 'none');
+            
+            if(tabName === 'results') {
+                document.querySelector('.eval-tab:nth-child(1)').classList.add('active');
+                document.getElementById('tab-results').style.display = 'block';
+            } else {
+                document.querySelector('.eval-tab:nth-child(2)').classList.add('active');
+                document.getElementById('tab-config').style.display = 'block';
+            }
+        };
+        
+        // Architecture Info Generation
+        window.showArchInfo = function(key) {
+            const info = archInfo[key];
+            ui.archContent.style.display = 'block';
+            ui.archTitle.textContent = info.title;
+            
+            let html = '';
+            
+            if(info.type === 'rewrite') {
+                html = `<table class="arch-table"><thead><tr><th>Rule Name</th><th>Term</th><th>Rewritten</th></tr></thead><tbody>`;
+                rewriteRules.forEach(r => {
+                    html += `<tr><td>${r.name}</td><td>${r.term}</td><td>${r.rewritten}</td></tr>`;
+                });
+                html += `</tbody></table>`;
+            } else if (info.type === 'trans') {
+                // Add Algorithm 3 header info
+                html = `<div style="font-family: 'JetBrains Mono', monospace; background: #f9f9f9; padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <strong>function</strong> TRANS(φ)<br>
+                    &nbsp;&nbsp;<strong>return</strong> CONV(φ ∧ RANGE(φ) ∧ ADM(φ))
+                </div>`;
+                html += `<table class="arch-table"><thead><tr><th>PBV Term</th><th>Integer Arithmetic (IA)</th></tr></thead><tbody>`;
+                translationRules.forEach(r => {
+                    html += `<tr><td>${r.pbv}</td><td>${r.ia}</td></tr>`;
+                });
+                html += `</tbody></table>`;
+            } else if (info.type === 'pow2') {
+                html = `<table class="arch-table"><thead><tr><th>Lemma Name</th><th>Formula</th></tr></thead><tbody>`;
+                lemmas.pow2.forEach(l => {
+                    html += `<tr><td>${l.name}</td><td>${l.formula}</td></tr>`;
+                });
+                html += `</tbody></table>`;
+            } else if (info.type === 'piand') {
+                html = `<table class="arch-table"><thead><tr><th>Lemma Name</th><th>Formula</th></tr></thead><tbody>`;
+                lemmas.piand.forEach(l => {
+                    html += `<tr><td>${l.name}</td><td>${l.formula}</td></tr>`;
+                });
+                html += `</tbody></table>`;
+            }
+            
+            ui.archBody.innerHTML = html;
+        };
+
+        function updateUI() {
+            ui.valDisplay.k.textContent = state.k;
+            ui.valDisplay.x.textContent = state.valX;
+            ui.valDisplay.y.textContent = state.valY;
+            ui.valDisplay.n.textContent = state.n;
+            ui.valDisplay.i.textContent = state.i;
+            ui.valDisplay.j.textContent = state.j;
+
+            const maxVal = Math.pow(2, state.k) - 1;
+            ui.sliders.x.max = maxVal;
+            ui.sliders.y.max = maxVal;
+            // Constraints
+            ui.sliders.i.max = state.k - 1;
+            ui.sliders.j.max = state.k - 1;
+
+            let sym = "∘";
+            let trans = "";
+            let adm = "";
+            let elim = "";
+
+            // Logic for showing/hiding controls
+            const unaryOps = ['not', 'neg', 'ext_z', 'ext_s', 'extract'];
+            const shiftOps = ['shl', 'lshr'];
+            const extOps = ['ext_z', 'ext_s'];
+            
+            ui.groups.y.classList.add('hidden');
+            ui.groups.n.classList.add('hidden');
+            ui.groups.i.classList.add('hidden');
+            ui.groups.j.classList.add('hidden');
+
+            if (!unaryOps.includes(state.op) && !shiftOps.includes(state.op)) {
+                 ui.groups.y.classList.remove('hidden');
+            } else if (shiftOps.includes(state.op) || extOps.includes(state.op)) {
+                 ui.groups.n.classList.remove('hidden');
+            } else if (state.op === 'extract') {
+                 ui.groups.i.classList.remove('hidden');
+                 ui.groups.j.classList.remove('hidden');
+            }
+
+            // Hide elim panel if not in lemma mode and operator has elim
+            ui.elimPanel.style.display = 'none';
+            
+            // Base variable constraints
+            const x_pos = "|x| > 0";
+            const y_pos = "|y| > 0";
+
+            // Correct x sign y in PBV formula and ADM logic
+            if (state.op === 'concat') {
+                sym = "∘";
+                trans = `<span class="math-term highlight-blue">x</span> · 2<sup><span class="math-term highlight-purple">k</span></sup> + <span class="math-term highlight-pink">y</span>`;
+                adm = `${x_pos}<br>${y_pos}`;
+            } else if (state.op === 'add') {
+                sym = "+<sup>B</sup>";
+                trans = `(<span class="math-term highlight-blue">x</span> + <span class="math-term highlight-pink">y</span>) mod 2<sup><span class="math-term highlight-purple">k</span></sup>`;
+                adm = `${x_pos}<br>${y_pos}<br>|x| = |y| = k`;
+            } else if (state.op === 'sub') {
+                sym = "-<sup>B</sup>";
+                trans = `(<span class="math-term highlight-blue">x</span> - <span class="math-term highlight-pink">y</span>) mod 2<sup><span class="math-term highlight-purple">k</span></sup>`;
+                adm = `${x_pos}<br>${y_pos}<br>|x| = |y| = k`;
+            } else if (state.op === 'mul') {
+                sym = "·<sup>B</sup>";
+                trans = `(<span class="math-term highlight-blue">x</span> * <span class="math-term highlight-pink">y</span>) mod 2<sup><span class="math-term highlight-purple">k</span></sup>`;
+                adm = `${x_pos}<br>${y_pos}<br>|x| = |y| = k`;
+            } else if (state.op === 'udiv') {
+                sym = "div<sup>B</sup>";
+                trans = `ite(y ≈ 0, 2<sup>k</sup>-1, x div y)`;
+                adm = `${x_pos}<br>${y_pos}<br>|x| = |y| = k`;
+            } else if (state.op === 'urem') {
+                sym = "mod<sup>B</sup>";
+                trans = `ite(y ≈ 0, x, x mod y)`;
+                adm = `${x_pos}<br>${y_pos}<br>|x| = |y| = k`;
+            } else if (state.op === 'and') {
+                sym = "&";
+                trans = `&<sup>ℕ</sup>(<span class="math-term highlight-purple">k</span>, <span class="math-term highlight-blue">x</span>, <span class="math-term highlight-pink">y</span>)`;
+                adm = `${x_pos}<br>${y_pos}<br>|x| = |y| = k`;
+            } else if (state.op === 'or') {
+                sym = "|";
+                trans = `<span class="math-term highlight-blue">x</span> + <span class="math-term highlight-pink">y</span> - &<sup>ℕ</sup>(<span class="math-term highlight-purple">k</span>, <span class="math-term highlight-blue">x</span>, <span class="math-term highlight-pink">y</span>)`;
+                adm = `${x_pos}<br>${y_pos}<br>|x| = |y| = k`;
+                elim = `x | y &rarr; (x + y) - (x & y)`;
+                ui.elimPanel.style.display = 'block';
+                ui.elimFormula.innerHTML = elim;
+            } else if (state.op === 'xor') {
+                sym = "⊕";
+                trans = `<span class="math-term highlight-blue">x</span> + <span class="math-term highlight-pink">y</span> - 2·&<sup>ℕ</sup>(<span class="math-term highlight-purple">k</span>, <span class="math-term highlight-blue">x</span>, <span class="math-term highlight-pink">y</span>)`;
+                adm = `${x_pos}<br>${y_pos}<br>|x| = |y| = k`;
+                elim = `x ⊕ y &rarr; (x + y) - 2(x & y)`;
+                ui.elimPanel.style.display = 'block';
+                ui.elimFormula.innerHTML = elim;
+            } else if (state.op === 'not') {
+                sym = "~";
+                trans = `2<sup><span class="math-term highlight-purple">k</span></sup> - (<span class="math-term highlight-blue">x</span> + 1)`;
+                adm = `${x_pos}`;
+            } else if (state.op === 'neg') {
+                sym = "-<sup>B</sup>";
+                trans = `(2<sup><span class="math-term highlight-purple">k</span></sup> - <span class="math-term highlight-blue">x</span>) mod 2<sup><span class="math-term highlight-purple">k</span></sup>`;
+                adm = `${x_pos}`;
+            } else if (state.op === 'shl') {
+                sym = "<<";
+                trans = `(<span class="math-term highlight-blue">x</span> · 2<sup><span class="math-term highlight-orange">n</span></sup>) mod 2<sup><span class="math-term highlight-purple">k</span></sup>`;
+                adm = `${x_pos}<br>${y_pos}<br>|x| = |n| = k`;
+            } else if (state.op === 'lshr') {
+                sym = ">>";
+                trans = `<span class="math-term highlight-blue">x</span> div 2<sup><span class="math-term highlight-orange">n</span></sup>`;
+                adm = `${x_pos}<br>${y_pos}<br>|x| = |n| = k`;
+            } else if (state.op === 'ext_z') {
+                sym = "ext<sub>z</sub>";
+                trans = `<span class="math-term highlight-blue">x</span>`;
+                adm = `${x_pos}<br>n ≥ 0`;
+            } else if (state.op === 'ext_s') {
+                sym = "ext<sub>s</sub>";
+                trans = `ite(msb(x), (2<sup>n</sup>-1)·2<sup>k</sup> + x, x)`;
+                adm = `${x_pos}<br>n ≥ 0`;
+            } else if (state.op === 'extract') {
+                sym = `[${state.i}:${state.j}]`;
+                trans = `(<span class="math-term highlight-blue">x</span> div 2<sup>${state.j}</sup>) mod 2<sup>${state.i - state.j + 1}</sup>`;
+                adm = `${x_pos}<br>0 ≤ ${state.j} ≤ ${state.i} < |x|`;
+            }
+            
+            // Range Formula Construction
+            let rangeX = `0 ≤ x < 2<sup>k</sup>`;
+            let rangeY = `<br>0 ≤ y < 2<sup>k</sup>`;
+            if (unaryOps.includes(state.op) || shiftOps.includes(state.op) || extOps.includes(state.op) || state.op === 'extract') {
+                ui.rangeFormula.innerHTML = rangeX;
+            } else {
+                ui.rangeFormula.innerHTML = rangeX + rangeY;
+            }
+
+            // Update formula display
+            if (state.op === 'not' || state.op === 'neg') {
+                ui.bvFormula.innerHTML = `<span class="math-term">${sym}</span><span class="math-term highlight-blue">x</span>`;
+            } else if (state.op === 'ext_z' || state.op === 'ext_s') {
+                ui.bvFormula.innerHTML = `<span class="math-term">${sym}</span>(<span class="math-term highlight-orange">n</span>, <span class="math-term highlight-blue">x</span>)`;
+            } else if (state.op === 'extract') {
+                ui.bvFormula.innerHTML = `<span class="math-term highlight-blue">x</span>${sym}`;
+            } else {
+                const rightOp = (state.op === 'shl' || state.op === 'lshr') 
+                    ? '<span class="math-term highlight-pink">y</span>' 
+                    : '<span class="math-term highlight-pink">y</span>';
+                // For shifts, we now use Y input so display Y
+                const secondOp = (shiftOps.includes(state.op)) ? '<span class="math-term highlight-pink">y</span>' : rightOp;
+                
+                ui.bvFormula.innerHTML = `<span class="math-term highlight-blue">x</span> <span class="math-term">${sym}</span> ${secondOp}`;
+            }
+            
+            ui.iaFormula.innerHTML = trans;
+            ui.admFormula.innerHTML = adm;
+        }
+
+        // --- Event Listeners ---
+        document.getElementById('operator-select').addEventListener('change', (e) => {
+            state.op = e.target.value;
+            state.activeLemma = null;
+            resetPositions();
+            updateUI();
+            setTimeout(() => {
+                updateScene();
+            }, 100);
+        });
+        
+        // Eval Panel Logic
+        document.getElementById('btn-eval').addEventListener('click', () => {
+            ui.evalPanel.style.display = 'block';
+            ui.archPanel.style.display = 'none';
+            ui.theoryPanel.style.display = 'none';
+        });
+        
+        document.getElementById('eval-close').addEventListener('click', () => {
+             ui.evalPanel.style.display = 'none';
+        });
+        
+        document.getElementById('analyze-btn').addEventListener('click', (e) => {
+            document.getElementById('analysis-content').style.display = 'block';
+            e.target.style.display = 'none';
+        });
+        
+        // Arch Panel Logic
+        document.getElementById('btn-arch').addEventListener('click', () => {
+            ui.archPanel.style.display = 'flex';
+            ui.evalPanel.style.display = 'none';
+            ui.theoryPanel.style.display = 'none';
+        });
+        
+        document.getElementById('arch-close').addEventListener('click', () => {
+            ui.archPanel.style.display = 'none';
+        });
+
+        // Theory Panel Logic
+        document.getElementById('btn-theory').addEventListener('click', () => {
+            ui.theoryPanel.style.display = 'block';
+            ui.evalPanel.style.display = 'none';
+            ui.archPanel.style.display = 'none';
+        });
+        
+        document.getElementById('theory-close').addEventListener('click', () => {
+             ui.theoryPanel.style.display = 'none';
+        });
+
+        // Minimize/Maximize Controls
+        ui.minimizeBtn.addEventListener('click', () => {
+            ui.controlsContainer.classList.add('minimized');
+            ui.restoreBtn.classList.add('visible');
+        });
+        
+        ui.restoreBtn.addEventListener('click', () => {
+            ui.controlsContainer.classList.remove('minimized');
+            ui.restoreBtn.classList.remove('visible');
+        });
+
+        document.getElementById('width-slider').addEventListener('input', (e) => {
+            state.k = parseInt(e.target.value);
+            updateScene();
+        });
+        document.getElementById('x-slider').addEventListener('input', (e) => {
+            state.valX = parseInt(e.target.value);
+            updateScene();
+        });
+        document.getElementById('y-slider').addEventListener('input', (e) => {
+            state.valY = parseInt(e.target.value);
+            updateScene();
+        });
+        document.getElementById('n-slider').addEventListener('input', (e) => {
+            state.n = parseInt(e.target.value);
+            updateScene();
+        });
+        document.getElementById('i-slider').addEventListener('input', (e) => {
+            state.i = parseInt(e.target.value);
+            updateScene();
+        });
+        document.getElementById('j-slider').addEventListener('input', (e) => {
+            state.j = parseInt(e.target.value);
+            updateScene();
+        });
+
+        // --- Animation Loop ---
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            // Gentle float for labels
+            objects.labelsContainer.position.y = Math.sin(Date.now() * 0.0005 * 2) * 0.05;
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // --- Init ---
+        updateScene();
+        animate();
+
+    </script>
+</body>
+</html>

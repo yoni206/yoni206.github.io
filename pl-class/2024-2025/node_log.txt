@@ -1,0 +1,92 @@
+1
+1;
+'a'
+"a"
+true
+null
+{x:5, y:6}
+typeof(1)
+typeof(1.5)
+typeof(NaN)
+5
+5+5.5
+a = [1,"a",2]
+typeof(null)
+undefined
+type(undefined)
+typeof(undefined)
+{x:1,y:2}.x
+{x:1,y:2}.z
+var a = 5
+a
+this.a
+a
+Infinity
+this.Infinity
+type(Infinity)
+typeof(Infinity)
+x = 5
+y = 5
+x == 6
+x == y
+x === y
+o1 = {a:1}
+o2 = {a:1}
+o1 == o2
+o1 === o2
+o3 = o1
+o3 == o1
+o3 === o1
+x = 5
+y = 5
+1 == true
+1 === true
+null == undefined
+null === undefined
+o1 == o2
+o1 === o2
+o1
+o2
+function f(x) {return x*x}
+f(3)
+var f = new Function("x", "return x*x")
+var f = new Function("x y", "return x*y")
+var f = new Function("x,y", "return x*y")
+f(3,4)
+var f = (function(x) {return x*x})
+(function(x) {return x*x})(3)
+var f = (function g(x) {return x*x})
+(function (x) {return x*x})(3)
+(function g(x) {if x == 1 {return 1} else {return x * g(x-1)}})(3)
+(function g(x) {if (x == 1) {return 1} else {return x * g(x-1)}})(3)
+g
+(function g(x) {if (x == 1) {return 1} else {return x * g(x-1)}})(3)
+g(1)
+var f = (function g(x) {if (x == 1) {return 1} else {return x * g(x-1)}})
+g(1)
+f(1)
+var o = {f: (fucntion () {return 5})}
+var o = {f: fucntion () {return 5}}
+var o = {f:function() {return 5}}
+o.f()
+var x = 3
+x
+(function() {var x = 4; x})()
+x
+x = 3
+var x = 3
+(function() {var x = 4; x})()
+(function(x) {if (x <= 1) return 1; else return 0;})(3)
+(function(x) {if (x <= 1) return 1; else return x * arguments.callee(x-1);})(3)
+var o = new Object()
+var now = new Date()
+var circle = {x:0, y:0, radius:2}
+circle
+var circle = {x:0, y:0, radius:2}
+var x = {a:1,b:2};
+x
+delete x.a
+x
+var x = {a:1,b:2};
+delete x.c
+x

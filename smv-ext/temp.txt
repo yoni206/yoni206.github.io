@@ -1,0 +1,29 @@
+ABSTRACTIONS
+
+T_state=(T_cmd=Green)&(P_cmd=Red)
+P_state=(T_cmd=Red)&(P_cmd=Green)
+I_state=(T_cmd=Red)&(P_cmd=Red)
+Bad_state=(T_cmd=Green)&(P_cmd=Green)
+T_enters=((Y(! (T_state)))& T_state)|((Y T_state)& E_sgnl& T_state)
+P_enters=((Y! P_state)& P_state)|((Y P_state)& P_sgnl& P_state)
+assumption01=G((P_state& P_sgnl)->(! P_sgnl  U  T_enters))
+requirement01=G(T_state-> X(! P_state))&G((T_state& X(X(P_state)))-> X(I_state))
+requirement02=G(P_state-> X(! T_state))&G((P_state& X(X(T_state)))-> X(I_state))
+requirement03=G(!( Bad_state))
+requirement04=G(T_enters->(X0^4(T_state)))
+requirement05=G(! T_state-> X1_7(T_state))
+requirement06=G(G(! P_sgnl)->G(! P_state))
+requirement07=G(P_sgnl -> X0_4(P_state))
+requirement08=G((I_state&Y T_state)-> X(T_enters))
+requirement09=G(P_enters->(X0^2(! E_sgnl)-> X0^2(P_state)))
+requirement10=G((P_state& E_sgnl)-> X1_2(T_enters))
+requirement11=G((I_state& P_sgnl&(Y P_state))-> X((T_enters)& (X0_4(P_state))))
+requirement12=T_state
+
+assumptions=assumption01
+
+requirements=requirement01&requirement02&requirement03&requirement04&requirement05&requirement06&requirement07&requirement08&requirement09&requirement10&requirement11&requirement12
+
+myspec=((assumptions) -> (requirements))
+#myspec=requirement11
+

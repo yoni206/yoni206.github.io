@@ -1,0 +1,341 @@
+<html>
+<head>
+<title> Automated Reasoning and Applications -- BIU 2023/2024 </title>
+
+<style>
+/* unvisited link */
+a:link {
+  color: green;
+}
+
+/* visited link */
+a:visited {
+  color: green;
+
+}
+/* mouse over link */
+a:hover {
+  color: hotpink;
+}
+
+/* selected link */
+a:active {
+  color: blue;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th,td {
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #DDD;
+  border-top: 1px solid #DDD;
+}
+
+
+tr:hover {background-color: #D6EEEE;}
+</style>
+
+</head>
+<body>
+<h1>Automated Reasoning and Applications (89546)</h1>
+Lecturer: <a href="../../">Yoni Zohar</a>
+<BR>
+TA: Zvika Berger
+<BR>
+<a href="https://cs.biu.ac.il">Department of Computer Science</a>
+<BR>
+<a href="https://www.biu.ac.il">Bar-Ilan University</a>
+
+<h2> Technical Details </h2>
+<h3> Time and Location </h3>
+<ul>
+<li> Semester: BIU 2024/2025 Semester A </li>
+<li> Lectures: Sundays, 17:00 -- 19:00 </li>
+<li> Recitations: Wednesdays, 20:00 -- 21:00 </li>
+<li> Forum: in the <a href="https://lemida.biu.ac.il/">LAMDA (moodle)</a> system.
+</ul>
+
+<h3> Grading </h3>
+<ul>
+<li> The best between: 3 HW (40%) and exam (60%), or exam (100%). </li>
+<li> One additional bonus HW: at most 5 bonus points for the HW part of the grade (100 is max).
+<li> MOED A: 9.2.25, 16:00 </li>
+<li> MOED B: 9.3.25, 16:00 </li>
+<li> <a href="exam-2023-ex.pdf"> Exam Example</a> and <a href="exam-2024-appendix.pdf">Appendix (DAF NUSHAOT)</a> </li>
+<li>This year's <a href="ar-exam-2024-a.pdf">MOED A</a> and <a href="ar-exam-2024-b.pdf">MOED B</a></li>
+<li> All HWs are <font color="red">not</font> mandatory.</li>
+</ul>
+
+<h3> Material </h3>
+<ul>
+<li>
+<a href="https://www.decision-procedures.org">Decision Procedures: An Algorithmic Point of View </a> by Kroening and Strichman
+<li><a href="https://link.springer.com/book/10.1007/978-3-540-74113-8">The Calculus of Computation
+</a> by Bradley and Manna</li>
+<li><a href="https://books.google.co.il/books/about/A_Mathematical_Introduction_to_Logic.html?id=dVncCl_EtUkC&printsec=frontcover&source=kp_read_button&hl=en&redir_esc=y#v=onepage&q&f=false">A Mathematical Introduction to Logic</a> by Enderton</li>
+<li>Other more specific resources will be given as needed.</li>
+<li>Google and youtube have a lot of material on automated reasoning.</li>
+
+<li> Sylabus: <a href="https://courses.biu.ac.il/CourseSylabusView.aspx?lid=775777"> here </a>
+</li>
+</ul>
+
+
+<h2> Tentative Topic List </h2>
+<ul>
+<li>SAT: Propositional logic, CNF conversion, DPLL, CDCL </li>
+<li>SMT: First-order logic, Theories, DPLL(T)  </li>
+<li>Particular Theories: Uninterpreted Functions, Bit-vectors, Arithmetic, Arrays,... </li>
+<li> Theory combination </li>
+<li>Advanced topics as time permits </li>
+</ul>
+
+
+
+<h2> Schedule </h2>
+The schedule will be updated during the semester.<BR>
+<BR>
+<table>
+<tr>
+<th> Date </th>
+<th> Lesson # </th>
+<th> Topics </th>
+<th> Reference </th>
+<th> HW </th>
+</tr>
+
+<tr>
+<td>3.11.24</td>
+<td> 1 </td>
+<td>
+Software Verification with SAT 
+<BR>
+Propositional Logic
+<BR>
+CNF
+</td>
+<td> 
+Chapters 1,2 of Decision Procedures 
+<BR>
+Chapter 1 of Calculus of Computation
+<BR>
+<a href=verification2.cnf>verification2.cnf</a>
+</td>
+<td> </td>
+</tr>
+
+<tr>
+<td>10.11.24</td>
+<td> 2 </td>
+<td>
+CNF<BR>
+Horn Formulas
+</td>
+<td>
+Chapter 1 of Calculus of Computation<BR>
+<a href="https://www.sciencedirect.com/science/article/pii/0743106684900141">Linear-time algorithms for testing the satisfiability of ...</a> by Dowling and Gallier<BR>
+</td>
+<td> 
+HW 1<BR>
+Due 4.12.24
+</td>
+</tr>
+
+<tr>
+<td>17.11.24
+</td>
+<td> 3 </td>
+<td>
+DPLL
+ </td>
+<td>
+<a href="https://homepage.cs.uiowa.edu/~tinelli/papers/NieOT-JACM-06.pdf">Solving SAT and SAT Modulo Theories...</a> by Nieuwenhuis et al.
+</td>
+<td> </td>
+</tr>
+
+<tr>
+<td>24.11.24</td>
+<td> 4 </td>
+<td> 
+DPLL correctness <BR>
+CDCL
+</td>
+<td> 
+<a href="https://homepage.cs.uiowa.edu/~tinelli/papers/NieOT-JACM-06.pdf">Solving SAT and SAT Modulo Theories...</a> by Nieuwenhuis et al. <BR>
+<a href="https://homepage.cs.uiowa.edu/~tinelli/talks/SATSMT-12.pdf">Slides about DPLL and CDCL</a> by Cesare Tinelli.
+</td>
+<td>
+</td>
+</tr>
+
+<tr>
+<td>1.12.24</td>
+<td> 5 </td>
+<td> 
+Fucntional Signatures<BR>
+Congruence Closure: Calculus
+</td>
+<td>
+Chapters 2, 9.1, 9.2  of Calculus of Computation<br>
+Chapter 4 of Decision Procedures<BR>
+<a href=uf.smt2>uf.smt2</a><BR>
+<a href="http://cvc5.github.io"</a>cvc5</a>
+</td>
+<td>
+HW 2
+<BR>
+Due 25.12.24
+</td>
+</tr>
+
+<tr>
+<td>8.12.24</td>
+<td> 6 </td>
+<td>
+Congruence Closure: Correctness<BR>
+</td>
+<td>
+Chapter 4 of Decision Procedures<br>
+Chapter 9.2 of Calculus of Computation <br>
+</td>
+<td> </td>
+</tr>
+
+<tr>
+<td>15.12.24</td>
+<td> 7 </td>
+<td>
+DPLL(UF)
+</td>
+<td>
+<a href="https://homepage.cs.uiowa.edu/~tinelli/papers/NieOT-JACM-06.pdf">Solving SAT and SAT Modulo Theories...</a> by Nieuwenhuis et al.
+<BR>
+<a href="http://i-cav.org/2021/cav-award/">CAV Award</a>
+ </td>
+<td>
+</td>
+</tr>
+
+<tr>
+<td>22.12.24</td>
+<td> 8 </td>
+<td>
+DPLL(UF) Correctness<BR>
+General Signatures
+</td>
+<td>
+Chapter 3 of Decision Procedures<br>
+<a href="https://homepage.cs.uiowa.edu/~tinelli/papers/NieOT-JACM-06.pdf">Solving SAT and SAT Modulo Theories...</a> by Nieuwenhuis et al.
+</td>
+<td>
+</td>
+</tr>
+
+<tr>
+<td>29.12.24<BR>
+</td>
+<td> -- </td>
+<td>
+Hanukkah</td>
+<td></td>
+<td>
+</td>
+</tr>
+
+
+<tr>
+<td>5.1.25</td>
+<td> 9  </td>
+<td>
+Many-sorted Signatures <BR>
+Bit-vectors
+</td>
+<td>
+Chapter 6 of Decision Procedures <BR>
+<a href="bv_int.smt2">smt-lib: integers</a>
+<a href="bv_bv.smt2">smt-lib: bit-vectors</a>
+</td>
+<td>
+HW 3<BR>
+Due 5.2.25
+</td>
+</tr>
+
+<tr>
+<td>12.1.25</td>
+<td> 10 </td>
+<td> 
+Quantifiers<BR>
+Arrays
+</td>
+<td>
+Chapter 7 of Decision Procedures <BR>
+Chapters 2, 3.6 and 9.5 of Calculus of Computation <BR>
+<a href="arrays_uf.smt2">arrays_uf.smt2</a><BR>
+<a href="arrays.smt2">arrays.smt2</a>
+</td>
+<td>
+</td>
+</tr>
+
+
+<tr>
+<td>19.1.25</td>
+<td> 11 </td>
+<td> 
+Arrays
+</td>
+<td>
+Chapter 7 of Decision Procedures <BR>
+Chapters 3.6 and 9.5 of Calculus of Computation <BR>
+</td>
+<td>
+HW 4 (RESHUT)
+<BR>
+Due 5.2.25
+</td>
+</tr>
+
+
+<tr>
+<td>26.1.25</td>
+<td> 12 </td>
+<td> 
+DPLL(BV) <BR>
+Towards Theory Combination
+</td>
+<td>
+Same references as DPLL(UF)
+</td>
+<td></td>
+</tr>
+
+<tr>
+<td>2.2.25</td>
+<td> 13 </td>
+<td> 
+Theory Combination
+</td>
+<td>
+Chapter 10 of Decision Procedures <BR>
+Chapters 3.8 and 10 of Calculus of Computation
+</td>
+<td></td>
+</tr>
+
+
+</table>
+
+
+
+
+
+</body>
+
+</html>

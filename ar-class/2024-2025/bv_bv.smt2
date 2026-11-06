@@ -1,0 +1,7 @@
+(set-logic QF_BV)
+(declare-fun a () (_ BitVec 32))
+(declare-fun b () (_ BitVec 8))
+(assert (= a (_ bv200 8)))
+(assert (= b (bvadd a (_ bv100 8))))
+(assert (not (bvugt b a)))
+(check-sat)

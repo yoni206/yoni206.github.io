@@ -1,0 +1,112 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<div style="background:#fff;border:1px solid #999;margin:-1px -1px 0;padding:0;">
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<title>Tex2Smv</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-44993364-1', 'tau.ac.il');
+  ga('send', 'pageview');
+
+</script>
+	<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+	</head>
+	<body>
+		<div id="page-wrap">
+			
+			<DIV class="vcard">
+				<H1 style="Z-INDEX: 0" class="fn">Tex2Smv</H1>
+			</DIV>
+			<div id="objective">
+				<p>
+					Translating Latex code to SMV code
+				</p>
+				
+			</div>
+			<div class="clear"></div>
+			<dl>
+				<dd class="clear">
+				</dd>
+				<dt>Background</dt>
+				<dd>
+					<ul>
+						<li>
+						<a href="http://nusmv.fbk.eu/" target="top">NuSMV </a> is a tool for formal verification using LTL, CTL and StateCharts. It's input language consists of symbols like "|", "&", "!", "G", "F" etc.
+						<li>
+						<a href="http://www.latex-project.org/" target="top"> Latex </a> is a language for writing scientific texts. The corresponding symbols in it for the above are "\vee", "\wedge", "\neg", "\Box", "\Diamond".	
+						<li>
+						If you are writing a Latex document that contains formulas of LTL or CTL, this small tool will translate those formula to the input language of NuSMV.
+					</ul>
+				</dd>
+				
+				<dd class="clear">
+				</dd>
+				<dt>Usage</dt>
+				<dd>
+					<ul>
+						<li>
+						Input: a .tex file containing some CTL or LTL formulas. The file may contain other information as well.
+						<li>
+						Output: a .txt file containing several linex. Each line is a translation of a formula from the latex file to NuSMV input language. <br>
+						The output file is saved in the input file's directory.
+						<li>
+						Execution: 
+							<ul>
+								<li> 
+									<a href ="jars/tex2smv.jar">Download the jar file.</a>
+								<li>
+									Go to the directory of the downloaded jar file.
+								<li>
+									Run "java -jar Tex2Smv.jar <path-to-tex-file>"
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</dd>
+				
+				<dd class="clear">
+				</dd>
+				<dt class="long">Example</dt>
+				<dd>	
+					<ul>
+						<li>
+							Input File: <a href="examples/tex2smv_example.tex">tex2smv_example.tex</a>
+						<li>
+							Command Line: java -jar Tex2Smv.jar tex2smv_example.tex
+						<li>	
+							Output File: <a href="examples/tex2smv_example.tex.txt">tex2smv_example.tex.txt</a>
+						
+						</li>
+					</ul>
+				</dd>
+				<dd class="clear">
+				</dd>
+				<dt class="long">Downloads</dt>
+				<dd>	
+					<ul>
+						<li>
+							Executable jar file: <a href="jars/tex2smv.jar"> tex2smv.jar</a>
+						<li>
+							Source: <a href="jars/Tex2Smv.java">Tex2Smv.java</a>, <a href="jars/SmvUtils.java">SmvUtils.java</a>
+						</li>
+					</ul>
+				</dd>
+			</dl>
+			
+			
+			<div class="clear"></div>
+		</div>
+		
+		<a href="index.html"> Go back to my homepage</a>
+	</body>
+</html>

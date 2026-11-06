@@ -1,0 +1,27 @@
+MODULE main
+VAR
+
+	LIGHT: {Red,Green};
+	TRAFFIC: boolean;
+	
+ASSIGN
+	init(LIGHT) := Green;
+	
+	TRANS (LIGHT=Green &
+			TRAFFIC)
+		->
+			(next(LIGHT)=Green);
+	TRANS (LIGHT=Green &
+			!TRAFFIC)
+		->
+		(next(LIGHT)=Red);
+	TRANS (LIGHT=Red &
+			TRAFFIC)
+		->
+		(next(LIGHT)=Green);
+	TRANS (LIGHT=Red &
+			!TRAFFIC)
+		->
+		(next(LIGHT)=Red);
+		
+LTLSPEC NAME myspec := ((G F !TRAFFIC) & (G (!TRAFFIC -> (X(((TRAFFIC))))&(X(X(((TRAFFIC)))))))) -> ((G ( TRAFFIC -> ((((LIGHT  = Green)))|(X(((LIGHT  = Green))))|(X(X(((LIGHT  = Green)))))|(X(X(X(((LIGHT  = Green)))))))))) 

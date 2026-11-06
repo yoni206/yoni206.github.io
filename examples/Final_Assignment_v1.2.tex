@@ -1,0 +1,290 @@
+%% LyX 2.0.2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[english]{article}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\PassOptionsToPackage{normalem}{ulem}
+\usepackage{ulem}
+
+\makeatletter
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+  \theoremstyle{plain}
+  \newtheorem{lem}{\protect\lemmaname}
+  \theoremstyle{definition}
+  \newtheorem{defn}{\protect\definitionname}
+  \theoremstyle{plain}
+  \newtheorem{cor}{\protect\corollaryname}
+  \theoremstyle{remark}
+  \newtheorem{rem}{\protect\remarkname}
+
+\makeatother
+
+\usepackage{babel}
+  \providecommand{\definitionname}{Definition}
+  \providecommand{\lemmaname}{Lemma}
+  \providecommand{\remarkname}{Remark}
+\providecommand{\corollaryname}{Corollary}
+
+\begin{document}
+
+\title{RTS Dev by The Formal Approach - Final Assignment}
+
+
+\author{Yoni Zohar 066480641}
+
+\maketitle
+
+\section{Part A - Problem B}
+\begin{lem}
+\label{lem: the first disjunct}If $s_{0}\models\psi_{2}\wedge EX_{\left[a,b\right]}\left(true\right)$
+then $s_{0}\models E\left(\psi_{1}U_{\left[a,b\right]}\psi_{2}\right)$.\end{lem}
+\begin{proof}
+Since $s_{0}\models EX_{\left[a,b\right]}\left(true\right)$, this
+means that there exists $s_{1}$ such that $\left\langle s_{0},n,s_{1}\right\rangle \in R$
+and $a\leq n\leq b$ (and $s_{1}\models true$, but this isn't important).
+In particular, consider any path starting at $s_{1}$ and denote it
+as $s_{1},s_{2},...$. Consider the path $s_{0},s_{1},s_{2},...$.
+Let $k=0$. Indeed, for this $k$, $s_{k}\models\psi_{2}$, there
+are no vertices between $s_{0}$ and $s_{k}$ and $a\leq\Sigma_{i=0}^{k}s_{i}=s_{0}\leq b$.
+Hence $s_{0}\models E\left(\psi_{1}U_{\left[a,b\right]}\psi_{2}\right)$.\end{proof}
+\begin{defn}
+Let $\varphi$ be a $TTG-CTL$ formula and let $K$ be a $TTG$. $K\left(\varphi\right):=\left\{ s\in K:\, s\models\varphi\right\} $.\end{defn}
+\begin{lem}
+\label{lem: EU =00003D or and EU}Let $K=\left\langle S,s_{I},R,L\right\rangle $
+be a $TTG$ and let $\psi_{1},\psi_{2}$ be $TTG-CTL$ formulas. Let
+$a\leq b\in\mathbb{N}$. Then there are $c,d,e$ such that:
+\begin{itemize}
+\item $K\left(E\left(\psi_{1}U_{\left[a,b\right]}\psi_{2}\right)\right)=K\left(\left(\psi_{2}\wedge EX_{\left[a,b\right]}\left(true\right)\right)\vee\left(\psi_{1}\wedge EX_{\left[c,c\right]}E\left(\psi_{1}U_{\left[d,e\right]}\psi_{2}\right)\right)\right)$.
+\item $a\leq c+d$
+\item $c+e\leq b$.
+\end{itemize}
+\end{lem}
+\begin{proof}
+$\left(\Leftarrow\right)$ Suppose $s\models\left(\psi_{2}\wedge EX_{\left[a,b\right]}\left(true\right)\right)\vee\left(\psi_{1}\wedge EX_{\left[c,c\right]}E\left(\psi_{1}U_{\left[d,e\right]}\psi_{2}\right)\right)$
+for some $c,d,e$ such that $a\leq c+d$ and $c+e\leq b$. If $s\models\left(\psi_{1}\wedge EX_{\left[a,b\right]}\left(true\right)\right)$
+then by Lemma \ref{lem: the first disjunct} $s\models E\left(\psi_{1}U_{\left[a,b\right]}\psi_{2}\right)$.
+Otherwise, \end{proof}
+\begin{lem}
+Let $K=\left\langle S,s_{I},R,L\right\rangle $ be a $TTG$ and let
+$\psi_{1},\psi_{2}$ be $TTG-CTL$ formulas. Let $a\leq b\in\mathbb{N}$.
+Then $K\left(A\left(\psi_{1}U_{\left[a,b\right]}\psi_{2}\right)\right)=K\left(\psi_{2}\vee\left(\psi_{1}\wedge AXA\left(\psi_{1}U_{\left[a,b\right]}\psi_{2}\right)\right)\right)$.\end{lem}
+\begin{proof}
+Similar to the proof of Lemma \ref{lem: EU =00003D or and EU}. \end{proof}
+\begin{cor}
+~
+\begin{itemize}
+\item $E\left(\psi_{1}U_{\left[a,b\right]}\psi_{2}\right)$ is a fix-pint
+of $\lambda Z.\psi_{2}\vee\left(\psi_{1}\wedge EXZ\right)$.
+\item \textup{$A\left(\psi_{1}U_{\left[a,b\right]}\psi_{2}\right)$ is a
+fix-point of $\lambda Z.\psi_{2}\vee\left(\psi_{1}\wedge AXZ\right)$.}
+\end{itemize}
+\end{cor}
+\begin{rem}
+From now on we fix a $TTG$ $K=\left\langle S,S_{I},R,L\right\rangle $
+and identify formulas with the set of states of that $TTG$ which
+satisfy it. \end{rem}
+\begin{lem}
+The functional $\lambda Z.\psi_{2}\vee\left(\psi_{1}\wedge EXZ\right)$
+is monotonic.\end{lem}
+\begin{proof}
+Assume $Z_{1}\subseteq Z_{2}$. We want to show that $\psi_{2}\vee\left(\psi_{1}\wedge EXZ_{1}\right)\subseteq\psi_{2}\vee\left(\psi_{1}\wedge EXZ_{1}\right)$.
+First, we show that $EXZ_{1}\subseteq EXZ_{1}$. Assume $s\models EXZ_{1}$.
+Then there exists $s'$ such that 
+\end{proof}
+
+\section{Part B}
+
+
+\subsection{Problem Assumptions and Requirements}
+
+
+\subsection{Ontology}
+\begin{itemize}
+\item $P\_sgnl$
+\item $E\_sgnl$
+\item $T\_cmd:=Red$
+\item $T\_cmd:=Green$
+\item $P\_cmd:=Red$
+\item $P\_cmd:=Green$
+\end{itemize}
+
+\subsection{Abstract Variables}
+\begin{itemize}
+\item $T\_state:=\left(T\_cmd=Green\right)\wedge\left(P\_cmd=Red\right)$
+\item $P\_state:=\left(T\_cmd=Red\right)\wedge\left(P\_cmd=Green\right)$ 
+\item $I\_state:=\left(T\_cmd=Red\right)\wedge\left(P\_cmd=Red\right)$
+\item $Bad\_state:=\left(T\_cmd=Green\right)\wedge\left(P\_cmd=Green\right)$
+\end{itemize}
+~
+\begin{itemize}
+\item $T\_enters:=\left(\left(\approx\left(\neg\left(T\_state\right)\right)\right)\wedge\left(T\_state\right)\right)\vee\left(\left(\approx\left(T\_state\right)\right)\wedge\left(E\_sgnl\right)\wedge\left(T\_state\right)\right)$
+\item $P\_enters:=\left(\left(\approx\left(\neg P\_state\right)\right)\wedge P\_state\right)\vee\left(\left(\approx\left(P\_state\right)\right)\wedge\left(P\_sgnl\right)\wedge\left(P\_state\right)\right)$
+\end{itemize}
+
+\subsubsection{Assumptions}
+\begin{itemize}
+\item An internal mechanism of $P$-button disables $P$-signal after one
+press in $P$-state. $P$-signal generation is re-enabled only upon
+the entrance to $T$-state. 
+
+\begin{description}
+\item [{LTL}] $\Box\left(\left(\left(\left(P\_state\right)\vee\left(\approx\left(P\_state\right)\right)\right)\wedge\left(P\_sgnl\right)\right)\rightarrow\left(\left(\neg P\_sgnl\right)\, U\,\left(T\_enters\right)\right)\right)$
+\footnote{The actual P-state is continued for (almost) one more moment. Therefore,
+the $P\_sgnl$ count includes the (almost) one moment after the $P\_state$
+(right before the transition to $I$-state).%
+}
+\item [{XCTL}] 
+\end{description}
+\end{itemize}
+
+\subsubsection{Requirements }
+\begin{itemize}
+\item Transfer from $T$-state to $P$-state must be seperated by $I$-state.
+
+\begin{description}
+\item [{LTL}] $\Box\left(T\_state\rightarrow X\left(\neg\left(P\_state\right)\right)\right)\wedge\Box\left(\left(\left(T\_state\right)\wedge X\left(X\left(P\_state\right)\right)\right)\rightarrow\left(X\left(I\_state\right)\right)\right)$.
+\item [{XCTL}] 
+\end{description}
+\item Transfer from $P$-state to $T$-state must be seperated by $I$-state.
+
+\begin{description}
+\item [{LTL}] $\Box\left(P\_state\rightarrow X\left(\neg\left(T\_state\right)\right)\right)\wedge\Box\left(\left(\left(P\_state\right)\wedge X\left(X\left(T\_state\right)\right)\right)\rightarrow X\left(I\_state\right)\right)$.
+\item [{XCTL}] 
+\end{description}
+\item The system should never be in a state where $T$-light and $P$-light
+show green, both: 
+
+\begin{description}
+\item [{LTL}] $\Box\left(\neg\left(Bad\_state\right)\right)$
+\item [{XCTL}] 
+\end{description}
+\item Initially, the system must be at $T$-state.
+
+\begin{description}
+\item [{LTL}] $T\_state$
+\item [{XCTL}] 
+\end{description}
+\item Each time the system enters $T$-state it should stay there for at
+least 4 seconds.
+
+\begin{description}
+\item [{LTL}] $\Box\left(T\_enters\rightarrow\left(X^{0,3}\left(T\_state\right)\right)\right)$%
+\footnote{In my formulation, $T\_cmd:=Red$ means that at this moment this command
+is issued. This means that if this command is issued 3 seconds in
+a row, the $T$ light will be red for 4 seconds (It will start to
+be red now for one second and then restart 3 more times, each time
+for one more second)%
+} 
+\item [{XCTL}] 
+\end{description}
+\item The system should never leave $T$-state for more than 7 seconds.
+
+\begin{description}
+\item [{LTL}] $\Box\left(\left(\left(\approx\left(T\_state\right)\right)\wedge\neg T\_state\right)\rightarrow\left(X_{1,7}\left(T\_state\right)\right)\right)$
+\item [{XCTL}] 
+\end{description}
+\item The system shall transfer from $T$-state to $P$-state only in response
+to $P$-signal.
+
+\begin{description}
+\item [{LTL}] $\Box\left(\neg\left(P\_sgnl\right)\right)\rightarrow\Box\left(\neg\left(P\_state\right)\right)$
+\item [{XCTL}] 
+\end{description}
+\item The system should reach $P$-state within 5 seconds since the occurence
+of $P$-signal.
+
+\begin{description}
+\item [{LTL}] $\Box\left(P\_sgnl\rightarrow\left(X_{0,5}\left(P\_state\right)\right)\right)$
+\footnote{Since P\_state means that the lights command is issued now, we want
+that the commands will be issued in the next 5 seconds. Therefore
+we don't use the same approach as above. There, we diminished the
+interval by one. Here, for the same reason as above, we don't diminish
+it. In both cases the main point is that a command is ``true'' in
+a state if it is started or restarted at that state. %
+}
+\item [{XCTL}] 
+\end{description}
+\item If an $E$-signal occurs while the system is in $I$-state - in transfer
+from $T$-state to $P$-state then the system should return immediately
+to $T$-state. 
+
+\begin{description}
+\item [{LTL}] $\Box\left(\left(\left(I\_state\right)\wedge\left(\approx\left(T\_state\right)\right)\wedge\left(E\_sgnl\right)\right)\rightarrow\left(X\left(T\_enters\right)\right)\right)$
+\item [{XCTL}] 
+\end{description}
+\item Once the system enters $P$-state it should stay there 3 seconds,
+unless there was an occurrence of an $E$-signal
+
+\begin{description}
+\item [{LTL}] $\Box\left(\left(P\_enters\right)\rightarrow\left(\left(X^{0,3}\left(\neg E\_sgnl\right)\right)\rightarrow\left(X^{0,3}\left(P\_state\right)\right)\right)\right)$ 
+\item [{XCTL}] 
+\end{description}
+\item The stay in $P$-state shall be constrained however by an occurrence
+of $E$-signal, in which case the system would reach $T$-state within
+2 seconds, not necessarily respecting the requirement of 3 seconds
+stay in $P$-state.
+
+\begin{description}
+\item [{LTL}] $\Box\left(\left(P\_state\wedge E\_sgnl\right)\rightarrow X_{1,2}\left(T\_enters\right)\right)$
+\item [{XCTL}] 
+\end{description}
+\item A $P$-signal that occurs while being in $I$-state, in transfer from
+$P$-state to $T$-state should be served, but only after entering
+$T$-state.
+
+\begin{description}
+\item [{LTL}] $\Box\left(\left(Y\left(I\_state\right)\wedge P\_sgnl\wedge\left(\approx\left(P\_state\right)\right)\right)\rightarrow X\left(T\_enters\wedge\left(X_{0,4}\left(P\_state\right)\right)\right)\right)$.%
+\footnote{``while being in $I$-state'': This means that we've entered $I$-state
+(i.e. $I\_state$ \textbf{\uline{was}} a true statement), and from
+then until now a $P\_sgnl$ occurred. This is why I use $Y\left(I\_state\right)$.%
+}
+\item [{XCTL}] 
+\end{description}
+\end{itemize}
+
+\subsubsection{Additional Assumptions}
+
+The above specification is not consistent: For example, if from the
+beginning both $E\_sgnl$ and $P\_sgnl$ are on non-stop, then by
+one of the requirements ($\Box\left(T\_enters\rightarrow\left(X^{0,4}\left(T\_state\right)\right)\right)$)
+we must stay forever at $T\_state$ (each second we must stay there
+for the next 4 seconds, because of the $E\_sgnl$). By another one
+of the requirements, we must reach $P\_state$ within 5 seconds ($\Box\left(P\_sgnl\rightarrow X_{0,5}\left(P\_state\right)\right)$).
+These requirements can't coincide. Therefore, I am adding the following
+assumption:
+\begin{itemize}
+\item The $P$-button mechanism has a very advanced (and internal) $E$-sensor.
+This sensor disables the $P$-button 7 seconds \textbf{before} an
+$E\_sgnl$ occurs. This sensor re-enables the $P\_button$ 7 second
+\textbf{after} the $E\_sgnl$ occurs. 
+
+\begin{description}
+\item [{LTL}] $\Box\left(\left(E\_sgnl\right)\rightarrow\left(\left(X^{0,7}\left(\neg\left(P\_sgnl\right)\right)\right)\wedge\left(Y_{0,7}\left(\neg\left(P\_sgnl\right)\right)\right)\right)\right)$.
+\item [{XCTL}] 
+\end{description}
+\end{itemize}
+I think that this is a reasonable assumption. First, I think that
+no assumptions should be made regarding the $E\_sgnl$, as we can't
+predict emergencies. It is more important for the system to handle
+emergencies well than to take care of pedestrians starvation. Pedestrians
+that try to activate the $P\_sgnl$ with no success should try again
+after a few seconds. If (god forbids) an $E\_sgnl$ keeps reoccurring,
+then the pedestrians should just make a detour and get to their destination
+using another way. As for how exactly this magic mechanism works,
+there could be several possibilities: first, it could be that the
+$P$-button $E$-sensor is more powerful than the $E$-sensor of the
+system. Moreover, the $P$-button $E$-sensor might operate on sounds,
+hearing the siren of the emergency car 5 seconds before it arrives
+at the system's $E$-sensor. The extra 5 seconds are quite arbitrary,
+and make the design simpler. It is possible to shorten the disablement
+period. 
+
+
+\subsection{NuSMV}
+
+
+\subsection{State-Chart}
+\end{document}

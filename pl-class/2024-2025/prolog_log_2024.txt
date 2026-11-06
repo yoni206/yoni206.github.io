@@ -1,0 +1,473 @@
+print(3).
+
+
+3
+[1mtrue.[0m
+
+print(3.55).
+
+
+3.5
+[1mtrue.[0m
+
+print(hello).
+
+
+hello
+[1mtrue.[0m
+
+print(a).
+
+
+a
+[1mtrue.[0m
+
+print(a).
+
+
+a
+[1mtrue.[0m
+
+atom(a).
+
+
+[1mtrue.[0m
+
+atom(f(a,b)).
+
+
+[1;31mfalse.[0m
+
+functor(a(x,y,z,w,v),a,5).
+
+
+[1mtrue.[0m
+
+functor(a(x,y,z,w,v),a,4).
+
+
+[1;31mfalse.[0m
+
+Action (h for help) ? EOF: exit (status 4)
+assert(a).
+
+
+[1mtrue.[0m
+
+assert(f(a,b)).
+
+
+[1mtrue.[0m
+
+assert(dog(dingo)).
+
+
+[1mtrue.[0m
+
+assert((cute(X) :- cat(X))).
+
+
+[1mtrue.[0m
+
+assert((cute(X) :- cat(X), high(X))).
+
+
+[1mtrue.[0m
+
+assert(cute(a,b)).
+
+
+[1mtrue.[0m
+
+listing(cute/1).
+
+
+:- dynamic cute/1.
+
+cute(A) :-
+    cat(A).
+cute(A) :-
+    cat(A),
+    high(A).
+
+[1mtrue.[0m
+
+listing(cute/2).
+
+
+:- dynamic cute/2.
+
+cute(a, b).
+
+[1mtrue.[0m
+
+cute(a).
+
+
+[1;31mERROR: Unknown procedure: cat/1
+ERROR: In:
+ERROR:   [11] [34mcat(a)[0m[0m[1;31m
+ERROR:   [10] [34mcute(a)[0m[0m[1;31m1-st clause of cute/1 <no source>
+ERROR:    [9] [34mtoplevel_call(user:user: ...)[0m[0m[1;31m at /opt/homebrew/Cellar/swi-prolog/9.0.4/libexec/lib/swipl/boot/toplevel.pl:1173
+[0m   [1;35mException: [0m(11) cat(a) ? nno debug
+Action (h for help) ? EOF: exit (status 4)
+Action (h for help) ? EOF: exit (status 4)
+consult("ancestor1.pl").
+
+
+[1mtrue.[0m
+
+parent(pam,bob).
+
+
+[1mtrue.[0m
+
+parent(pam,tom).
+
+
+[1;31mfalse.[0m
+
+Action (h for help) ? EOF: exit (status 4)
+consult("parent1.pl").
+
+
+[1mtrue.[0m
+
+ancestor(pam,bob).
+
+
+[1mtrue [0m,
+Unknown action: , (h for help)
+Action? .[1m.[0m
+
+ancestor(pam,ann).
+
+
+[1mtrue [0m.[1m.[0m
+
+Action (h for help) ? Unknown option (h for help)
+Action (h for help) ? assert(chases(fido,mary)).
+
+
+[1mtrue.[0m
+
+assert(chases(fido,john)).
+
+
+[1mtrue.[0m
+
+chases(fido,fido).
+
+
+[1;31mfalse.[0m
+
+chases(fido,mary).
+
+
+[1mtrue.[0m
+
+chases(fido,X).
+
+
+X = mary ;[1m;[0m
+X = john.
+
+3+4 =:= 2+5 .
+
+
+[1mtrue.[0m
+
+3+4 == 2+5.
+
+
+[1;31mfalse.[0m
+
+3+4 = 2+5.
+
+
+[1;31mfalse.[0m
+
+3+4 == 3 + X.
+
+
+[1;31mfalse.[0m
+
+3+4 = 3 + X.
+
+
+X = 4.
+
+assert(sumto(1,1)).
+
+
+[1mtrue.[0m
+
+assert((sumto(N,S) :- N > 1, M is N-1, sumto(M, R), S is R+N)).
+
+
+[1mtrue.[0m
+
+sumto(4,10).
+
+
+[1mtrue [0m.[1m.[0m
+
+sumto(4,).
+
+
+[1;31mERROR: Syntax error: Illegal start of term
+ERROR: sumto(4
+ERROR: ** here **
+ERROR: ,) . 
+[0msumto(4,9).
+
+
+[1;31mfalse.[0m
+
+sumto(4,X).
+
+
+X = 10 .[1m.[0m
+
+sumto(Y,4).
+
+
+[1;31mERROR: Arguments are not sufficiently instantiated
+ERROR: In:
+ERROR:   [11] [34m_16792>1[0m[0m[1;31m
+ERROR:   [10] [34msumto(_16818,4)[0m[0m[1;31m2-nd clause of sumto/2 <no source>
+ERROR:    [9] [34mtoplevel_call(user:user: ...)[0m[0m[1;31m at /opt/homebrew/Cellar/swi-prolog/9.0.4/libexec/lib/swipl/boot/toplevel.pl:1173
+[0msumto(Y,10).
+
+
+[1;31mERROR: Arguments are not sufficiently instantiated
+ERROR: In:
+ERROR:   [11] [34m_1526>1[0m[0m[1;31m
+ERROR:   [10] [34msumto(_1552,10)[0m[0m[1;31m2-nd clause of sumto/2 <no source>
+ERROR:    [9] [34mtoplevel_call(user:user: ...)[0m[0m[1;31m at /opt/homebrew/Cellar/swi-prolog/9.0.4/libexec/lib/swipl/boot/toplevel.pl:1173
+[0mAction (h for help) ? EOF: exit (status 4)
+assert (p :- p).
+
+
+[1;31mERROR: Syntax error: Operator expected
+ERROR: assert
+ERROR: ** here **
+ERROR:  (p :- p) . 
+[0massert (p :- p).
+
+
+[1;31mERROR: Syntax error: Operator expected
+ERROR: assert
+ERROR: ** here **
+ERROR:  (p :- p) . 
+[0massert(p :- p).
+
+
+[1mtrue.[0m
+
+p.
+
+
+Action (h for help) ? Unknown option (h for help)
+Action (h for help) ? 
+Action (h for help) ? EOF: exit (status 4)
+print([dog,cat,fish]).
+
+
+[dog,cat,fish]
+[1mtrue.[0m
+
+print([one | [two,three]]).
+
+
+[one,two,three]
+[1mtrue.[0m
+
+assert(member(X,[X|L])).
+
+
+[1mtrue.[0m
+
+assert((member(X,[Y|L]) :- member(X,L)).
+
+
+[1;31mERROR: Syntax error: Operator expected
+ERROR: assert((member(X,[Y|L]) :- member(X,L))
+ERROR: ** here **
+ERROR:  . 
+[0massert((member(X,[Y|L]) :- member(X,L))).
+
+
+[1mtrue.[0m
+
+member(1,[1,2,3,4]).
+
+
+[1mtrue [0m.[1m.[0m
+
+member(5,[1,2,3,4]).
+
+
+[1;31mfalse.[0m
+
+member(3,[1,2,3,4]).
+
+
+[1mtrue [0m.[1m.[0m
+
+member(3,[1,2,3,4]).
+
+
+[1mtrue [0m;[1m;[0m
+[1;31mfalse.[0m
+
+member(3,[1,2,2,3,4]).
+
+
+[1mtrue [0m.[1m.[0m
+
+member(2,[1,2,2,3,4]).
+
+
+[1mtrue [0m;[1m;[0m
+[1mtrue [0m;[1m;[0m
+[1;31mfalse.[0m
+
+Action (h for help) ? EOF: exit (status 4)
+consult("task4.pl").
+
+
+[1mtrue.[0m
+
+sorted([1,2,3,4]).
+
+
+[1mtrue [0m
+Unknown action:  (h for help)
+Action? [
+Unknown action: [ (h for help)
+Action? A
+Unknown action: A (h for help)
+Action? .[1m.[0m
+
+sorted([1,3,2,4]).
+
+
+[1;31mfalse.[0m
+
+simplesort([1,3,2,4],[1,2,3,4]).
+
+
+[1mtrue [0m.[1m.[0m
+
+simplesort([1,3,2,4],X).
+
+
+X = [1, 2, 3, 4] ;[1m;[0m
+[1;31mfalse.[0m
+
+Action (h for help) ? Unknown option (h for help)
+Action (h for help) ? EOF: exit (status 4)
+consult(ancestor1.ppl).
+
+
+[1;31mERROR: Type error: `dict' expected, found `ancestor1' (an atom)
+ERROR: In:
+ERROR:   [13] [34mthrow(error(type_error(dict,ancestor1),_21468))[0m[0m[1;31m
+ERROR:   [11] [34m'.'(ancestor1,pl,_21502)[0m[0m[1;31m at /opt/homebrew/Cellar/swi-prolog/9.0.4/libexec/lib/swipl/boot/dicts.pl:57
+ERROR:   [10] [34m'<meta-call>'(user:user: ...)[0m[0m[1;31m <foreign>
+ERROR:    [9] [34mtoplevel_call(user:user: ...)[0m[0m[1;31m at /opt/homebrew/Cellar/swi-prolog/9.0.4/libexec/lib/swipl/boot/toplevel.pl:1173
+ERROR: 
+ERROR: Note: some frames are missing due to last-call optimization.
+ERROR: Re-run your program in debug mode (:- debug.) to get more detail.
+[0mconsult("ancestor1.pl").
+
+
+[1mtrue.[0m
+
+ancestor1(tom,pat).
+
+
+[1mtrue [0m.[1m.[0m
+
+ancestor2(tom,pat).
+
+
+[1mtrue [0m.[1m.[0m
+
+ancestor3(tom,pat).
+
+
+[1mtrue [0m.[1m.[0m
+
+ancestor4(tom,pat).
+
+
+[1;31mERROR: Stack limit (1.0Gb) exceeded
+ERROR:   Stack sizes: local: 0.9Gb, global: 48.4Mb, trail: 0Kb
+ERROR:   Stack depth: 6,338,712, last-call: 0%, Choice points: 6,338,705
+ERROR:   In:
+ERROR:     [6,338,712] user:ancestor4(_12688292, pat)
+ERROR:     [6,338,711] user:ancestor4(_12688312, pat)
+ERROR:     [6,338,710] user:ancestor4(_12688332, pat)
+ERROR:     [6,338,709] user:ancestor4(_12688352, pat)
+ERROR:     [6,338,708] user:ancestor4(_12688372, pat)
+ERROR: 
+ERROR: Use the --stack_limit=size[KMG] command line option or
+ERROR: ?- set_prolog_flag(stack_limit, 2_147_483_648). to double the limit.
+[0m   [1;35mException: [0m(6,338,711) ancestor4(_12688206, pat) ? creep
+   [1;35mException: [0m(6,338,710) ancestor4(_12688204, pat) ? 
+Action (h for help) ? qUnknown option (h for help)
+Action (h for help) ? aabort
+EOF: exit (status 4)
+[1;31mERROR: Stack limit (1.0Gb) exceeded
+ERROR:   Stack sizes: local: 0.9Gb, global: 48.4Mb, trail: 0Kb
+ERROR:   Stack depth: 6,338,712, last-call: 0%, Choice points: 6,338,705
+ERROR:   Probable infinite recursion (cycle):
+ERROR:     [6,338,710] user:ancestor4(_12694748, pat)
+ERROR:     [6,338,709] user:ancestor4(_12694768, pat)
+[0mancestor4(tom,pat).
+
+
+[1;31mERROR: Unknown procedure: ancestor4/2 (DWIM could not correct goal)
+[0mconsult("ancestor1.pl")
+.
+
+
+[1mtrue.[0m
+
+ancestor4(tom,pat).
+
+
+[1;31mERROR: Stack limit (1.0Gb) exceeded
+ERROR:   Stack sizes: local: 0.9Gb, global: 48.5Mb, trail: 0Kb
+ERROR:   Stack depth: 6,337,919, last-call: 0%, Choice points: 6,337,912
+ERROR:   Probable infinite recursion (cycle):
+ERROR:     [6,337,919] user:ancestor4(_12701978, pat)
+ERROR:     [6,337,918] user:ancestor4(_12701998, pat)
+[0m   [1;35mException: [0m(6,337,918) ancestor4(_12701910, pat) ? 
+Action (h for help) ? aabort
+EOF: exit (status 4)
+ancestor4(bob,pat).
+
+
+[1;31mERROR: Unknown procedure: ancestor4/2 (DWIM could not correct goal)
+[0mconsult("ancestor1.pl").
+
+
+[1mtrue.[0m
+
+ancestor4(bob,pat).
+
+
+[1;31mERROR: Stack limit (1.0Gb) exceeded
+ERROR:   Stack sizes: local: 0.9Gb, global: 48.5Mb, trail: 0Kb
+ERROR:   Stack depth: 6,337,919, last-call: 0%, Choice points: 6,337,912
+ERROR:   Probable infinite recursion (cycle):
+ERROR:     [6,337,919] user:ancestor4(_12701920, pat)
+ERROR:     [6,337,918] user:ancestor4(_12701940, pat)
+[0m   [1;35mException: [0m(6,337,918) ancestor4(_12701852, pat) ? aabort
+[32m% Execution Aborted
+[0mh
+
+Action (h for help) ? EOF: exit (status 4)

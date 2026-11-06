@@ -1,0 +1,84 @@
+print(3).
+print(3.5).
+print(a).
+print(hello).
+print(f(1,2)).
+print(g(a,b)).
+functor(f(a,b,c),f,3).
+functor(f(a,b,c),f,2).
+print(a).
+print(f(1,2)).
+print(g(a,b)).
+
+atom(a).
+atom(f(1,2)).
+assert(a).
+assert(f(a,b)).
+assert(dog(dingo)).
+
+assert(cute(X) :- cat(X)).
+assert(p(a)).
+assert(p(a,b)).
+assert(p(X) :- q(X)).
+listing(p/1).
+listing(p).
+consult("parent1.pl")
+parent(pam,bob).
+ancestor(pam,bob).
+ancestor(pam,ann).
+assert(chases(fido,mary)).
+assert(chases(fido,john)).
+chases(fido,X).
+;
+is(X,2).
+X is 2.
+2 is 2.
+2 is X.
+=:=(2,2).
+2 =:= 2.
+X =:= 2.
+2 =:= X.
+assert((checkeven(N) :- M is N//2, N=:= 2*M)).
+checkeven(2).
+checkeven(3).
+
+likes(X,prolog) == likes(X,prolog).
+likes(X,prolog) == likes(Y,prolog).
+
+pred1(X)=pred1(10).
+likes(X,prolog)=likes(john,Y).
+assert(sumto(1,1)).
+assert((sumto(N,S) :- N>1, M is N-1, sumto(M,R), S is R + N)).
+
+sumto(3,S).
+
+assert(p :- p).
+p.
+
+consult("ancestor1").
+ancestor1(tom,pat).
+ancestor2(tom,pat).
+ancestor3(tom,pat).
+ancestor4(tom,pat).
+
+print([alpha|[beta,gamma,delta]]).
+print([alpha,beta,gamma|[delta]]).
+print([alpha,beta,gamma,delta|[]]]).
+print([alpha,beta|[gamma,delta]]]).
+
+
+assert((member(X,[X|L]))).
+assert((member(X,[Y|L]) :- member(X,L))).
+member(1,[1,2,3,4]).
+
+assert(concat([], L2, L2)).
+assert((concat([X|L1],L2,[X|L3]) :- concat(L1, L2, L3))).
+concat([1,2,3],[4,5,6],X).
+
+assert(del(X,[X|Tail],Tail)).
+assert((del(X,[Y|Tail],[Y|Tail1]) :- del(X, Tail, Tail1))).
+
+
+permut([], []).
+permut(X, [A | Y]) :-concat(X1, [A | X2], X), concat(X1, X2, X3), permut(X3, Y).
+

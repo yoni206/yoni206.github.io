@@ -1,0 +1,303 @@
+<html>
+<head>
+<title> Automated Reasoning and Applications -- BIU 2023/2024 </title>
+
+<style>
+/* unvisited link */
+a:link {
+  color: green;
+}
+
+/* visited link */
+a:visited {
+  color: green;
+
+}
+/* mouse over link */
+a:hover {
+  color: hotpink;
+}
+
+/* selected link */
+a:active {
+  color: blue;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th,td {
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #DDD;
+  border-top: 1px solid #DDD;
+}
+
+
+tr:hover {background-color: #D6EEEE;}
+</style>
+
+</head>
+<body>
+<h1>Automated Reasoning and Applications (89546)</h1>
+Lecturer: <a href="../../">Yoni Zohar</a>
+<BR>
+Graders: Zvika Berger, Amit Paz
+<BR>
+<a href="https://cs.biu.ac.il">Department of Computer Science</a>
+<BR>
+<a href="https://www.biu.ac.il">Bar-Ilan University</a>
+
+<h2> Technical Details </h2>
+<h3> Time and Location </h3>
+<ul>
+<li> Semester: BIU 2023/2024 Semester A </li>
+<li> Time: Sundays 17:00 -- 18:30 AM </li>
+<li> Location: <a href ="https://www2.biu.ac.il/Tour/campus-map.pdf"> Building 902</a>, Room 9 </li>
+<li> Forum: in moodle.
+</ul>
+
+<h3> Grading </h3>
+<ul>
+<li> 3 HW (40%) and exam (60%) </li>
+<li> MOED A: 3.4.24 </li>
+<li> MOED B: 16.5.24 </li>
+<li> <a href="exam-2023-ex.pdf"> Exam Example</a> and <a href="exam-2023-appendix.pdf">Appendix (DAF NUSHAOT)</a> </li>
+<li><a href="ar2023a.pdf">Last year's MOED A</a></li>
+<li><a href="ar2023b.pdf">Last year's MOED B</a></li>
+</ul>
+
+<h3> Material </h3>
+<ul>
+<li>
+<a href="https://www.decision-procedures.org">Decision Procedures: An Algorithmic Point of View </a> by Kroening and Strichman
+<li><a href="https://link.springer.com/book/10.1007/978-3-540-74113-8">The Calculus of Computation
+</a> by Bradley and Manna</li>
+<li><a href="https://books.google.co.il/books/about/A_Mathematical_Introduction_to_Logic.html?id=dVncCl_EtUkC&printsec=frontcover&source=kp_read_button&hl=en&redir_esc=y#v=onepage&q&f=false">A Mathematical Introduction to Logic</a> by Enderton</li>
+<li>Other more specific resources will be given as needed.</li>
+<li>Google and youtube have a lot of material on automated reasoning.</li>
+
+<li> Sylabus: <a href="https://shoham.biu.ac.il/BiuCoursesViewer/CourseDetails.aspx?lid=744964"> here </a>
+</li>
+</ul>
+
+
+<h2> Tentative Topic List </h2>
+<ul>
+<li>SAT: Propositional logic, CNF conversion, DPLL, CDCL </li>
+<li>SMT: First-order logic, Theories, DPLL(T)  </li>
+<li>Particular Theories: Uninterpreted Functions, Bit-vectors, Arithmetic, Arrays,... </li>
+<li> Theory combination </li>
+<li>Advanced topics as time permits </li>
+</ul>
+
+<h2> Schedule </h2>
+
+<table>
+<tr>
+<th> Date </th>
+<th> Lesson # </th>
+<th> Topics </th>
+<th> Reference </th>
+<th> HW </th>
+</tr>
+
+
+<tr>
+<td>31.12.23</td>
+<td> 1 </td>
+<td>
+Software Verification with SAT 
+<BR>
+Propositional Logic
+<BR>
+CNF <BR>
+DIMCAS
+<td> 
+Chapters 1,2 of Decision Procedures 
+<BR>
+Chapter 1 of Calculus of Computation
+<BR>
+<a href=verification2.cnf>verification2.cnf</a>
+</td>
+<td> </td>
+</tr>
+
+<tr>
+<td>7.1.24</td>
+<td> 2 </td>
+<td>
+CNF<BR>
+Horn Formulas
+</td>
+<td> 
+Chapter 1 of Calculus of Computation<BR>
+<a href="https://www.sciencedirect.com/science/article/pii/0743106684900141">Linear-time algorithms for testing the satisfiability of ...</a> by Dowling and Gallier<BR>
+</td>
+<td> 
+<a href="https://github.com/yoni206/ar-class-2024-hw1/blob/main/hw1.pdf">
+	HW 1</a> <BR>
+Due 21.1.23
+</td>
+</tr>
+
+<tr>
+<td>14.1.24<BR>
+</td>
+<td> 3 </td>
+<td>
+Horn Formulas <BR>
+DPLL
+ </td>
+<td>
+<a href="https://www.sciencedirect.com/science/article/pii/0743106684900141">Linear-time algorithms for testing the satisfiability of ...</a> by Dowling and Gallier<BR>
+<a href="https://homepage.cs.uiowa.edu/~tinelli/papers/NieOT-JACM-06.pdf">Solving SAT and SAT Modulo Theories...</a> by Nieuwenhuis et al.
+</td>
+<td> </td>
+</tr>
+
+<tr>
+<td>21.1.24</td>
+<td> 4 </td>
+<td>
+DPLL
+</td>
+<td> 
+Chapter 2 of Decision Procedures <BR>
+<a href="https://homepage.cs.uiowa.edu/~tinelli/papers/NieOT-JACM-06.pdf">Solving SAT and SAT Modulo Theories...</a> by Nieuwenhuis et al.
+</td>
+<td> 
+	<a href="https://github.com/yoni206/ar-class-2024-hw2/blob/main/hw2.pdf">HW 2</a> <BR>
+	Due 11.2.24
+</td>
+</tr>
+
+<tr>
+<td>28.1.24</td>
+<td> -- </td>
+<td> 
+		MILUIM week
+</td>
+<td> 
+</td>
+<td>
+</td>
+</tr>
+
+<tr>
+<td>4.2.24<BR>
+</td>
+<td> 5 </td>
+<td>
+Intro to First-order Logic <BR>
+Fucntional Signatures<BR>
+Semantics of Functional Signatures <BR>
+Congruence Closure: Calculus
+</td>
+<td>
+Chapters 2, 9.1, 9.2  of Calculus of Computation<br>
+Chapter 4 of Decision Procedures<BR>
+<a href=uf.smt2>uf.smt2</a><BR>
+<a href="http://cvc5.github.io"</a>cvc5</a>
+</td>
+<td> 
+</td>
+</tr>
+
+<tr>
+<td>11.2.24</td>
+<td> 6 </td>
+<td>Congruence Closure: Correctness</td>
+
+<td>
+Chapter 4 of Decision Procedures <br>
+Chapters 9.1, 9.2 of Calculus of Computation<br>
+ </td>
+<td> 
+<a href="https://github.com/yoni206/ar-class-2024-hw3/blob/main/hw3.pdf">HW 3 </a><BR> Due 25.2.24
+</td>
+</tr>
+
+<tr>
+<td>18.2.24</td>
+<td> 7  </td>
+<td> 
+DPLL(UF)
+</td>
+<td> 
+<a href="https://homepage.cs.uiowa.edu/~tinelli/papers/NieOT-JACM-06.pdf">Solving SAT and SAT Modulo Theories...</a> by Nieuwenhuis et al.
+<BR>
+<a href="http://i-cav.org/2021/cav-award/">CAV Award</a>
+<BR>
+<a href="dplluf.smt2">Example of industrial smt2 file</a>
+</td>
+<td>
+</td>
+</tr>
+
+<tr>
+<td>25.2.24<BR>
+</b>
+</font>
+</td>
+<td> 8 </td>
+<td> 
+DPLL(UF) <BR>
+General Signatures
+</td>
+<td>
+Chapter 3 of Decision Procedures<br>
+<a href="https://homepage.cs.uiowa.edu/~tinelli/papers/NieOT-JACM-06.pdf">Solving SAT and SAT Modulo Theories...</a> by Nieuwenhuis et al.
+<BR>
+<a href="http://i-cav.org/2021/cav-award/">CAV Award</a>
+<BR>
+<a href="dplluf.smt2">Example of industrial smt2 file</a>
+</td>
+<td> 
+
+</td>
+</tr>
+
+
+<tr>
+<td>3.3.24</td>
+<td> 9  </td>
+<td> 
+General Signatures <BR>
+Arithmetic <BR>
+Many-sorted Signatures <BR>
+ </td>
+<td> 
+Chapters 2 -- 3 of Calculus of Computation<br>
+Chapters 3--5 of Decision Procedures<br>
+</td>
+<td> </td>
+</tr>
+
+<tr>
+<td>10.3.24</td>
+<td> 10 </td>
+<td> 
+Arrays <BR>
+Quantifiers
+</td>
+<td>Chapter 7 of Decision Procedures <BR>
+Chapters 2, 3.6 and 9.5 of Calculus of Computation <BR>
+<a href="arrays_uf.smt2">arrays_uf.smt2</a><BR>
+<a href="arrays.smt2">arrays.smt2</a>
+</td>
+<td> </td>
+</tr>
+
+
+</table>
+
+
+
+
+</body>
+
+</html>

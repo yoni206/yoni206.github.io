@@ -1,0 +1,19 @@
+Formal Methods and Automated Reasoning
+Department of Computer Science, Bar-Ilan University
+Israel
+
+Msc, PhD, and Postdoctoral Positions
+
+This is a call for interest for Msc, PhD, and postdoctoral research at Yoni Zohar's group in Bar-Ilan University.
+
+The positions will focus on Satisfiability Modulo Theories (SMT) methods for verification of smart contracts, as well as for bit-precise reasoning. 
+The work will be done in collaboration with Stanford University and The University of Iowa.
+
+Qualifications:
+
+The ideal applicants would have:
+* For Msc positions: strong programming skills and/or mathematical maturity, preferably both
+* For PhD positions: experience in conducting practical or theoretical research in automated reasoning
+* For Postdoc positions: a strong publication record in formal methods 
+
+Interested applicants should send their CV, including a list of publications, in PDF to yoni.zohar@biu.ac.il together with the names of at least two references.

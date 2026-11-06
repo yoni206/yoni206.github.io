@@ -1,0 +1,307 @@
+<html>
+<head>
+<title> Automated Reasoning and Applications -- BIU 2021/2022 </title>
+
+<style>
+/* unvisited link */
+a:link {
+  color: green;
+}
+
+/* visited link */
+a:visited {
+  color: green;
+}
+
+/* mouse over link */
+a:hover {
+  color: hotpink;
+}
+
+/* selected link */
+a:active {
+  color: blue;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th,td {
+  border-left: 1px solid #000;
+  border-right: 1px solid #000;
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #DDD;
+  border-top: 1px solid #DDD;
+}
+
+
+tr:hover {background-color: #D6EEEE;}
+</style>
+
+</head>
+<body>
+<h1>Automated Reasoning and Applications (89546)</h1>
+<a href="../../">Yoni Zohar</a>
+<BR>
+<a href="https://cs.biu.ac.il">Department of Computer Science</a>
+<BR>
+<a href="https://www.biu.ac.il">Bar-Ilan University</a>
+
+<h2> Technical Details </h2>
+<h3> Time and Location </h3>
+<ul>
+<li> Semester: BIU 2021/2022 Semester B </li>
+<li> Time: Sundays 10:15 -- 11:45 AM </li>
+<li> Location: <a href ="https://www2.biu.ac.il/Tour/campus-map.pdf"> Building 505</a>, Room 2 </li>
+</ul>
+
+<h3> Grading </h3>
+<ul>
+<li> 3 HW (40%) and exam (60%) </li>
+<li> MOED A: 29.06.2022 </li>
+<li> MOED B: 23.08.2022 </li>
+<li> <a href="exam-2022-ex.pdf"> Exam Example</a> and <a href="exam-2022-appendix.pdf">Appendix (DAF NUSHAOT)</a> </li>
+</ul>
+
+<h3> Material </h3>
+<ul>
+<li>
+<a href="https://www.decision-procedures.org">Decision Procedures: An Algorithmic Point of View </a> by Kroening and Strichman
+<li><a href="https://link.springer.com/book/10.1007/978-3-540-74113-8">The Calculus of Computation
+</a> by Bradley and Manna</li>
+<li><a href="https://books.google.co.il/books/about/A_Mathematical_Introduction_to_Logic.html?id=dVncCl_EtUkC&printsec=frontcover&source=kp_read_button&hl=en&redir_esc=y#v=onepage&q&f=false">A Mathematical Introduction to Logic</a> by Enderton</li>
+<li>Other more specific resources will be given as needed.</li>
+<li>Google and youtube have a lot of material on automated reasoning.</li>
+
+<li> Sylabus: <a href="https://shoham.biu.ac.il/BiuCoursesViewer/CourseSylabusView.aspx?lid=742053"> here </a>
+</li>
+</ul>
+
+
+<h2> Tentative Topic List </h2>
+<ul>
+<li>SAT: Propositional logic, CNF conversion, DPLL, CDCL </li>
+<li>SMT: First-order logic, Theories, DPLL(T)  </li>
+<li>Particular Theories: Uninterpreted Functions, Bit-vectors, Arithmetic, Arrays,... </li>
+<li> Theory combination </li>
+<li>Advanced topics as time permits </li>
+</ul>
+
+<h2> Schedule </h2>
+
+<table>
+<tr>
+<th> Date </th>
+<th> Lesson # </th>
+<th> Topics </th>
+<th> Reference </th>
+<th> HW </th>
+</tr>
+
+<tr>
+<td>06.03.22</td>
+<td> 1 </td>
+<td> 
+Software Verification with SAT <BR>
+Propositional Logic <BR>
+CNFization
+</td>
+<td> Chapters 1+2 of Decision Procedures
+<BR>
+Chapter 1 of Calculus of Computation
+</td>
+<td> </td>
+</tr>
+
+<tr>
+<td>13.03.22</td>
+<td> 2 </td>
+<td>  
+CNFization<BR>
+DIMACS <BR>
+Polynomial cases of SAT
+</td>
+<td> Chapter 2 of Decision Procedures
+<BR>
+Chapter 1 of Calculus of Computation
+<BR> 
+<a href="https://www.sciencedirect.com/science/article/pii/0743106684900141">Linear-time algorithms for testing the satisfiability of ...</a> by Dowling and Gallier
+<BR>
+<a href="http://aleteya.cs.buap.mx/~jlavalle/papers/complexity/p216-schaefer.pdf">The Complexity of Satisfiability Problems</a> by Schaefer
+</td>
+<td> </td>
+</tr>
+
+<tr>
+<td>20.03.22</td>
+<td> 3 </td>
+<td> DPLL: Calculus<BR>
+ DPLL: Implementation</td>
+<td> Chapter 2 of Decision Procedures
+<br>
+<a href="https://homepage.cs.uiowa.edu/~tinelli/papers/NieOT-JACM-06.pdf">Solving SAT and SAT Modulo Theories...</a> by Nieuwenhuis et al.
+</td>
+<td> <a href="https://github.com/yoni206/ar-class-2022-hw1/blob/main/hw1.pdf">HW 1</a></td>
+</tr>
+
+<tr>
+<td>27.03.22</td>
+<td> 4 </td>
+<td> DPLL: Correctness <BR>  
+Software Verification with FOL</td>
+<td> Chapters 2 and 4 of Decision Procedures<br>
+<a href="https://homepage.cs.uiowa.edu/~tinelli/papers/NieOT-JACM-06.pdf">Solving SAT and SAT Modulo Theories...</a> by Nieuwenhuis et al.<br>
+<a href="termination.pdf">A termination proof of DPLL</a>
+</td>
+<td> </td>
+</tr>
+
+<tr>
+<td>03.04.22</td>
+<td> 5 </td>
+<td> Functional Signatures <BR>
+Semantics <BR>
+Flat Cubes
+</td>
+<td> 
+Chapter 2 of Calculus of Computation<br>
+Chapter 4 of Decision Procedures
+</td>
+<td> </td>
+</tr>
+
+<tr>
+<td>10.04.22</td>
+<td> 6 </td>
+<td> Congruence Closure: Calculus<BR>
+ Congruence Closure: Implementation</td>
+<td>
+Chapter 4 of Decision Procedures <br>
+Chapters 9.1, 9.2 of Calculus of Computation<br>
+<a href="smtlib_example.smt2">An example of an smt2 file</a><br>
+<a href="pysmt_example.py">An example of a python file that uses pysmt</a><br>
+<a href="https://smtlib.cs.uiowa.edu/papers/smt-lib-reference-v2.6-r2021-05-12.pdf">The SMT-LIB Standard</a>
+</td>
+<td> <a href="https://github.com/yoni206/ar-class-2022-hw2/blob/main/hw2.pdf">HW 2</a></td>
+</tr>
+
+<tr>
+<td>17.04.22</td>
+<td> -- </td>
+<td> No Class </td>
+<td> </td>
+<td> </td>
+</tr>
+
+<tr>
+<td>24.04.22</td>
+<td> 7 </td>
+<td> Congruence Closure: Correctness <BR>
+Intro to DPLL(UF)
+</td>
+<td>  
+Chapters 3-4 of Decision Procedures<br>
+Chapter 9.2 of Calculus of Computation <br>
+<a href="https://homepage.cs.uiowa.edu/~tinelli/papers/NieOT-JACM-06.pdf">Solving SAT and SAT Modulo Theories...</a> by Nieuwenhuis et al.<br>
+</td>
+<td> </td>
+</tr>
+
+<tr>
+<td>01.05.22</td>
+<td> 8 </td>
+<td> DPLL(UF): Calculus <BR>
+DPLL(UF): Correctness</td>
+<td> 
+Chapter 3 of Decision Procedures<br>
+<a href="https://homepage.cs.uiowa.edu/~tinelli/papers/NieOT-JACM-06.pdf">Solving SAT and SAT Modulo Theories...</a> by Nieuwenhuis et al.
+</td>
+<td> </td>
+</tr>
+
+
+<tr>
+<td>08.05.22</td>
+<td> 9 </td>
+<td> DPLL(UF): Correctness <BR>
+General Signatures
+ </td>
+<td> 
+Chapter 2 of Calculus of Computation<br>
+Chapters 3--4 of Decision Procedures<br>
+<a href="https://homepage.cs.uiowa.edu/~tinelli/papers/NieOT-JACM-06.pdf">Solving SAT and SAT Modulo Theories...</a> by Nieuwenhuis et al.
+</td>
+<td> </td>
+</tr>
+
+<tr>
+<td>15.05.22</td>
+<td> 10 </td>
+<td> 
+General Signatures <br>
+Arithmetic <br>
+The Install Problem
+</td>
+<td> 
+Chapters 2--3 of Calculus of Computation<br>
+Chapter 5 of Decision Procedures<br>
+<a href="http://goto.ucsd.edu/~rjhala/papers/opium.pdf">Opium: Optimal package install/uninstall manager</a> by Tucker et al.
+</td>
+<td> </td>
+</tr>
+
+<tr>
+<td>22.05.22</td>
+<td> 11 </td>
+<td>Many-sorted Signatures<BR>
+Bit-vectors
+ </td>
+<td>Chapter 6 of Decision Procedures </td>
+<td> <a href="https://github.com/yoni206/ar-class-2022-hw3/blob/main/hw3.pdf">HW 3</a></td>
+</tr>
+
+<tr>
+<td>29.05.22</td>
+<td> -- </td>
+<td> No Class </td>
+<td> </td>
+<td> </td>
+</tr>
+
+<tr>
+<td>05.06.22</td>
+<td> -- </td>
+<td> No Class </td>
+<td> </td>
+<td> </td>
+</tr>
+
+<tr>
+<td>12.06.22</td>
+<td> 12 </td>
+<td>Quantifiers<br>
+Arrays
+</td>
+<td>Chapter 7 of Decision Procedures <BR>
+Chapters 3.6 and 9.5 of Calculus of Computation </td>
+<td> </td>
+</tr>
+
+<tr>
+<td>19.06.22</td>
+<td> 13 </td>
+<td>Arrays <BR>
+Summary </td>
+<td>Chapter 7 of Decision Procedures <BR>
+Chapters 3.6 and 9.5 of Calculus of Computation </td>
+<td> </td>
+</tr>
+
+
+</table>
+
+</body>
+
+</html>
